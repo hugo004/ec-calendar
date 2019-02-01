@@ -9,3 +9,7 @@ reference link: https://stackoverflow.com/questions/24038215/how-to-navigate-fro
 
 >
 
+### first clone project
+> type pod update
+pod install
+

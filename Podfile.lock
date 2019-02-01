@@ -1,4 +1,7 @@
 PODS:
+  - EAIntroView (2.12.0):
+    - EARestrictedScrollView (~> 1.1.0)
+  - EARestrictedScrollView (1.1.0)
   - ReactiveCocoa (8.0.2):
     - ReactiveSwift (~> 4.0)
   - ReactiveSwift (4.0.0):
@@ -7,22 +10,27 @@ PODS:
   - SnapKit (4.0.1)
 
 DEPENDENCIES:
+  - EAIntroView
   - ReactiveCocoa (~> 8.0)
   - SnapKit (~> 4.0.0)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
+    - EAIntroView
+    - EARestrictedScrollView
     - ReactiveCocoa
     - ReactiveSwift
     - Result
     - SnapKit
 
 SPEC CHECKSUMS:
+  EAIntroView: 249559079ddfdbe80e5bcb755c04c3b964b2ac27
+  EARestrictedScrollView: b0c2a3f92fb2610bb44d71c5e4893777c89e45ef
   ReactiveCocoa: fbd26e9ba60e98417ee47433e59465a98ed9da0f
   ReactiveSwift: a2bb9ace428a109e9c0209615645d9d286c8c433
   Result: bd966fac789cc6c1563440b348ab2598cc24d5c7
   SnapKit: 0de968a9fec17499afa29683b05d0c775b6d1c29
 
-PODFILE CHECKSUM: 95b79cec2a5424fbac7efaed852625fad368a195
+PODFILE CHECKSUM: 5a09f5286041d98fe801137a9f7ff654efe8d72b
 
 COCOAPODS: 1.5.3

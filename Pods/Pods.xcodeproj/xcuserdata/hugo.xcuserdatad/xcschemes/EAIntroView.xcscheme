@@ -14,10 +14,10 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "04A937E2CA22754C4D214F7394F8E6AD"
-               BlueprintName = "Result"
+               BlueprintIdentifier = "15B427361909F663C6AB9A3D0E109333"
+               BlueprintName = "EAIntroView"
                ReferencedContainer = "container:Pods.xcodeproj"
-               BuildableName = "Result.framework">
+               BuildableName = "EAIntroView.framework">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
