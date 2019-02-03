@@ -67,6 +67,13 @@
 			path = Test;
 			sourceTree = "<group>";
 		};
+		9A1F33AE2207497C0068CC4B /* Documentations */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Documentations;
+			sourceTree = "<group>";
+		};
 		9AB4BD802202E96E00306E94 = {
 			isa = PBXGroup;
 			children = (
@@ -88,6 +95,7 @@
 		9AB4BD8B2202E96E00306E94 /* ec-calendar */ = {
 			isa = PBXGroup;
 			children = (
+				9A1F33AE2207497C0068CC4B /* Documentations */,
 				9AB4BDA02202EB7800306E94 /* Modules */,
 				9AB4BD9F2202EB3D00306E94 /* Helpers */,
 				9AB4BD9E2202EB2E00306E94 /* Launch */,
