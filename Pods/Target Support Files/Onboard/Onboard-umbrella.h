@@ -10,9 +10,9 @@
 #endif
 #endif
 
-#import "EAIntroPage.h"
-#import "EAIntroView.h"
+#import "OnboardingViewController.h"
+#import "OnboardingContentViewController.h"
 
-FOUNDATION_EXPORT double EAIntroViewVersionNumber;
-FOUNDATION_EXPORT const unsigned char EAIntroViewVersionString[];
+FOUNDATION_EXPORT double OnboardVersionNumber;
+FOUNDATION_EXPORT const unsigned char OnboardVersionString[];
 
