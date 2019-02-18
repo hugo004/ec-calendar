@@ -75,7 +75,7 @@ class TestViewController: UIViewController {
         
         //hugo vc id
         hugo.reactive.controlEvents(UIControl.Event.touchUpInside).observe { _ in
-            self.linkToMyVC(id: "sampleVC")
+            self.navigationController?.pushViewController(CalendarVC(), animated: true)
         }
     }
     
