@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>DiaryAddlblImage</key>
+	<string>Image:</string>
+	<key>DiaryAddlblTitle</key>
+	<string>Title:</string>
+	<key>DiaryAddlblWeather</key>
+	<string>Weather:</string>
+	<key>DiaryAddlblDate</key>
+	<string>Date:</string>
+	<key>DiaryAddlblContent</key>
+	<string>Content:</string>
+	<key>DiaryAddbtnSubmit</key>
+	<string>Submit</string>
+	<key>DiaryAddbtnCamera</key>
+	<string>Camera</string>
+	<key>DiaryAddbtnGallery</key>
+	<string>Gallery</string>
+	<key>TranslblLanguage</key>
+	<string>Language:</string>
+</dict>
+</plist>
