@@ -65,10 +65,12 @@ class MonthHeaderView: UIView {
             make.right.equalTo(self).offset(-20)
             make.size.equalTo(left)
         }
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
     
 }
