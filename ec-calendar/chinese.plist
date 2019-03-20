@@ -20,5 +20,7 @@
 	<string>相簿</string>
 	<key>TranslblLanguage</key>
 	<string>語言:</string>
+	<key>Translblmode</key>
+	<string>黑暗模式:</string>
 </dict>
 </plist>

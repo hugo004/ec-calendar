@@ -20,5 +20,7 @@
 	<string>Gallery</string>
 	<key>TranslblLanguage</key>
 	<string>Language:</string>
+	<key>Translblmode</key>
+	<string>Dark Mode:</string>
 </dict>
 </plist>
