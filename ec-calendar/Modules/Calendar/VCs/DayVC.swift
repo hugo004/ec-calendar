@@ -18,8 +18,7 @@ struct TimeTicket {
 
 class DayVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-    public
-        var today: Date?
+    var today: ECDay!
     
     var tableView: UITableView!
     var hour = 0;
@@ -27,8 +26,17 @@ class DayVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     var hourPM = 12;
     var timeTicketCounter = 15;
     var timeTicketList: Array<TimeTicket>!
+    var eventList: [ECEvent] = []
     
-
+     init(day: ECDay) {
+        super.init(nibName: nil, bundle: nil);
+        self.today = day;
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     func initData() -> Void
     {
         timeTicketList = [];
@@ -55,11 +63,18 @@ class DayVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         initData();
         // Do any additional setup after loading the view.
         tableView = UITableView(frame: self.view.bounds, style: .grouped);
+        tableView.backgroundColor = UIColor.white;
         tableView.delegate = self;
         tableView.dataSource = self;
         
         self.view.addSubview(tableView);
         
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated);
+        
+        self.navigationItem.title = today?.toString();
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -81,27 +96,51 @@ class DayVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         var ticket: TimeTicket = timeTicketList[section];
+        
+        let header = UIView();
+        header.backgroundColor = UIColor.white;
+        
+        let line = UIView();
+        line.backgroundColor = UIColor.lightGray
 
         let button = UIButton(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 50));
-        button.layer.borderWidth = 1;
-        button.layer.borderColor = UIColor.lightText.cgColor;
         button.backgroundColor = .white;
         button.contentHorizontalAlignment = .left;
         button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 0);
         
-        let mark = (ticket.hide) ? "+" : "-";
-        
-        button.setTitle("\(ticket.hour):00 \(ticket.unit) (\(mark))", for: .normal);
-        button.setTitleColor(UIColor.black, for: .normal);
+        button.setTitle("\(ticket.hour):00 \(ticket.unit)", for: .normal);
+        button.setTitleColor(UIColor.lightGray, for: .normal);
         
         button.reactive.controlEvents(.touchUpInside).observeValues { _ in
             ticket.hide = !ticket.hide;
             self.timeTicketList[section] = ticket;
             tableView.reloadSections(IndexSet(integer: section), with: .automatic);
         }
+        
+        
+        header.addSubview(line);
+        header.addSubview(button);
+        
+        button.snp.makeConstraints { (make) in
+            make.centerY.equalTo(header);
+            make.left.equalTo(header).offset(10);
+            make.size.equalTo(CGSize(width: 100, height: 40))
+        }
+        
+        line.snp.makeConstraints { (make) in
+            make.centerY.equalTo(header);
+            make.left.equalTo(button.snp.right);
+            make.right.equalTo(header);
+            make.height.equalTo(1);
+        }
+        
+        
+        return header;
 
-        return button;
-
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 60;
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -122,21 +161,42 @@ class DayVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        let vc: EventVC = EventVC();
-        vc.modalPresentationStyle = .custom
-        self.navigationController?.present(vc, animated: true, completion: nil)
+        let eventVc: EventVC = EventVC();
+        eventVc.modalPresentationStyle = .custom
+        self.navigationController?.present(eventVc, animated: true, completion: nil)
+        
+        let eventView = eventVc.eventView;
     
-        vc.eventView.ok.reactive.controlEvents(.touchUpInside).observeValues { _ in
-            let vcs: Array = (self.navigationController?.viewControllers)!;
-            
-            for  vc: UIViewController in vcs {
-                if (vc.isKind(of: CalendarVC.self))
-                {
-                    self.navigationController?.popToViewController(vc, animated: true)
-                }
-            }
+        //MARK: - add event
+        eventView.ok.reactive.controlEvents(.touchUpInside).observeValues { _ in
+            eventVc.dismiss(animated: true, completion: {
+               let event = ECEvent(
+                    title: eventView.title.text!,
+                    location: eventView.location.text!,
+                    remark: eventView.remark.text!,
+                    addCalendar: eventView.switchView.isOn
+                )
+                
+                self.eventList.append(event);
+                
+                //save event to local, key format: event-20190320
+                Helper.localSaveEvents(data: self.eventList, key: "\(LocalDataKey.Event)-\(self.today.idString())");
+                self.backToCalendar();
+            })
         }
         
+    }
+    
+    func backToCalendar() -> Void {
+        let vcs: Array = (self.navigationController?.viewControllers)!;
+        
+        for  vc: UIViewController in vcs {
+            if (vc.isKind(of: CalendarVC.self))
+            {
+                self.navigationController?.popToViewController(vc, animated: true)
+            }
+        }
+
     }
     
     

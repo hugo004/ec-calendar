@@ -58,6 +58,19 @@ class EventView: UIView {
         return txtView;
     }()!
     
+    var addToCalendar = false;
+    let switchView: UISwitch = {
+        let swt = UISwitch();
+        
+        return swt;
+    }()
+    
+    let switchText: UILabel = {
+        let lbl = UILabel();
+        lbl.text = "Add to calendar";
+        
+        return lbl;
+    }()
     
     
     convenience init (){
@@ -68,6 +81,8 @@ class EventView: UIView {
         self.addSubview(title)
         self.addSubview(location)
         self.addSubview(remark);
+        self.addSubview(switchText);
+        self.addSubview(switchView);
 
         
         self.backgroundColor    = UIColor.white
@@ -98,8 +113,19 @@ class EventView: UIView {
             make.size.equalTo(CGSize(width: 300, height: 150))
         }
         
+        switchView.snp.makeConstraints { (make) in
+            make.top.equalTo(remark.snp.bottom).offset(10)
+            make.left.equalTo(remark);
+        }
+        
+        switchText.snp.makeConstraints { (make) in
+            make.centerY.equalTo(switchView);
+            make.left.equalTo(switchView.snp.right).offset(10)
+        }
+
+        
         ok.snp.makeConstraints { (make) in
-            make.top.equalTo(remark.snp.bottom).offset(20)
+            make.top.equalTo(switchView.snp.bottom).offset(20)
             make.right.equalTo(self).offset(-10)
             make.size.equalTo(CGSize(width: 100, height: 30))
         }

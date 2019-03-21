@@ -23,18 +23,65 @@ class CalendarVC: UIViewController, UICollectionViewDelegate, UICollectionViewDa
     var ecDate: [ECDate]!
 
     var currMonth = 0
+    
 
     var tableview: UITableView!
+    
+    var doubleSundayMode = true;
+    var seletedDay: ECDay?
+    var today: ECDay?
+    
+    var eventList: [ECEvent] = [];
 
     override func viewDidLoad() {
         super.viewDidLoad()
         edgesForExtendedLayout = []
         view.backgroundColor = UIColor.white
 
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Calendar Mode",
+                                                                 style: .plain,
+                                                                 target: self,
+                                                                 action: #selector(showCalendarMode))
+        
+        let year: Int = Calendar.current.component(.year, from: Date());
+        let month: Int = Calendar.current.component(.month, from: Date()) - 1; //calendar month follow index start from 0..
+        let day: Int = Calendar.current.component(.day, from: Date());
+        seletedDay = ECDay(year: year, month: month, day: day); //default selet today
+        currMonth = month;
+        
         initCalendarDataSource()
         initCollectionView()
         initTableView()
+        
+        //default retrive today events, if have
+        eventList = Helper.localRetrieveEvents(key: "\(LocalDataKey.Event)-\(seletedDay!.idString())");
+        tableview.reloadData();
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated);
+        cv.reloadData();
+    }
+    
+    @objc func showCalendarMode() -> Void {
+        doubleSundayMode = !doubleSundayMode;
+        currMonth = 0;
+        header.lblMonth.text = ecDate[currMonth].month
+        
+        if (doubleSundayMode)
+        {
+            self.navigationItem.rightBarButtonItem?.title = "Double Sundday Mode";
+        }
+        else
+        {
+            self.navigationItem.rightBarButtonItem?.title =  "Double Saturday Mode";
+
+        }
+
+        initCalendarDataSource();
+        cv.reloadData()
+    }
+
     
     func isLeapYear() -> Bool {
         let year:Int = Calendar.current.component(.year, from: Date());
@@ -47,7 +94,17 @@ class CalendarVC: UIViewController, UICollectionViewDelegate, UICollectionViewDa
         ecDate = [];
         var startWeekday = 1
         
-        let marTotalDay = isLeapYear() ? 31 : 30; //ec calendar set march total for leap year instead of feb, feb awayls 29 total
+        var marTotalDay = isLeapYear() ? 31 : 30; //ec calendar set march total for leap year instead of feb, feb awayls 29 total
+        var augTotalDay = isLeapYear() ? 31 : 30; //double Sat mode
+        
+        if doubleSundayMode
+        {
+            augTotalDay = 31;
+        }
+        else
+        {
+            marTotalDay = 31;
+        }
 
         let monthDict = [
             (name:"Jan", days:31),
@@ -57,7 +114,7 @@ class CalendarVC: UIViewController, UICollectionViewDelegate, UICollectionViewDa
             (name:"May", days:31),
             (name:"Jun", days:30),
             (name:"Jul", days:31),
-            (name:"Aug", days:31),
+            (name:"Aug", days:augTotalDay),
             (name:"Sep", days:30),
             (name:"Oct", days:31),
             (name:"Nov", days:30),
@@ -65,16 +122,30 @@ class CalendarVC: UIViewController, UICollectionViewDelegate, UICollectionViewDa
         ];
         for month in monthDict {
             let myDate = ECDate(month: month.name, totalDay: month.days);
-            startWeekday = myDate.calculateWeekdays(lastWeekday: startWeekday);
             
-            if myDate.day.last?.weekday == 7 {
-                startWeekday = 7
+            if doubleSundayMode == false && month.name == "Dec"
+            {
+                startWeekday = WeekDays.Fri.rawValue;
             }
-            
+
+            startWeekday = myDate.calculateWeekdays(lastWeekday: startWeekday);
+
+            if doubleSundayMode
+            {
+                if myDate.day.last?.weekday == WeekDays.Sun.rawValue {
+                    startWeekday = WeekDays.Sun.rawValue
+                }
+            }
+            else
+            {
+                if myDate.day.last?.weekday == WeekDays.Sat.rawValue {
+                    startWeekday = WeekDays.Sat.rawValue
+                }
+            }
+
             ecDate.append(myDate);
 
         }
-        
     }
 
     func initCollectionView() {
@@ -84,11 +155,17 @@ class CalendarVC: UIViewController, UICollectionViewDelegate, UICollectionViewDa
         flowlayout.headerReferenceSize = CGSize(width: view.frame.size.width, height: 40)
         
 
-        cv = UICollectionView(frame: view.bounds, collectionViewLayout: flowlayout)
+        cv = UICollectionView(frame: CGRect(x: 0,
+                                            y: 0,
+                                            width: self.view.frame.size.width,
+                                            height: 400),
+                              collectionViewLayout: flowlayout)
         cv.delegate = self
         cv.dataSource = self
         cv.backgroundColor = UIColor.white
         cv.contentInset = UIEdgeInsets(top: 10, left: 10, bottom: 0, right: 10)
+        cv.allowsSelection = true;
+        cv.allowsMultipleSelection = false;
 
         cv.register(DateCVCell.self, forCellWithReuseIdentifier: identifier)
         cv.register(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header")
@@ -120,19 +197,19 @@ class CalendarVC: UIViewController, UICollectionViewDelegate, UICollectionViewDa
             self.cv.reloadData()
         }
 
-        view.addSubview(header)
-        view.addSubview(cv)
+        self.view.addSubview(header)
+        self.view.addSubview(cv)
 
         cv.snp.makeConstraints { make in
-            make.top.equalTo(header.snp.bottom)
-            make.width.bottom.equalTo(self.view)
+            make.top.equalTo(header.snp.bottom);
+            make.width.equalTo(self.view);
+            make.height.equalTo(400);
         }
     }
 
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
-
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return ecDate[currMonth].day.count;
@@ -143,6 +220,14 @@ class CalendarVC: UIViewController, UICollectionViewDelegate, UICollectionViewDa
 
         let today: Day = ecDate[currMonth].day[indexPath.row];
         
+        let year = Calendar.current.component(.year, from: Date());
+        cell.today = ECDay(year: year,month: currMonth,day: today.day);
+        cell.today?.weekDay = today.weekday;
+        
+        cell.hightlightToday(events: eventList);
+        let evnets = Helper.localRetrieveEvents(key: "\(LocalDataKey.Event)-\(cell.today?.idString() ?? "")");
+        cell.today?.events = evnets;
+        cell.eventMark();
         if today.day < 0 {
             cell.isHidden = true;
         }else {
@@ -150,12 +235,9 @@ class CalendarVC: UIViewController, UICollectionViewDelegate, UICollectionViewDa
             cell.isHidden = false;
             
             if today.weekday == 7 {
-                cell.lblDate.textColor = UIColor.white;
-                cell.contentView.backgroundColor = UIColor.red;
+                cell.highlighSunDay()
             }else {
                 cell.lblDate.textColor = UIColor.black;
-                cell.contentView.backgroundColor = UIColor.white;
-
             }
         }
         
@@ -165,10 +247,11 @@ class CalendarVC: UIViewController, UICollectionViewDelegate, UICollectionViewDa
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let cell = collectionView.cellForItem(at: indexPath) as! DateCVCell
-        cell.showEvetn()
-        let vc = DayVC()
-        vc.today = cell.today
-        navigationController?.pushViewController(vc, animated: true)
+        
+        seletedDay = cell.today;
+        
+        eventList = cell.today?.events ?? [];
+        tableview.reloadData();
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
@@ -278,11 +361,19 @@ class CalendarVC: UIViewController, UICollectionViewDelegate, UICollectionViewDa
     func initTableView() {
         tableview = UITableView(frame: CGRect(x: 0,
                                               y: cv.frame.origin.y,
-                                              width: view.frame.size.width,
-                                              height: view.frame.size.height - cv.frame.size.height),
+                                              width: self.view.frame.size.width,
+                                              height: self.view.frame.size.height - cv.frame.size.height),
                                 style: .grouped)
+        tableview.backgroundColor = UIColor.white;
+        tableview.delegate = self;
+        tableview.dataSource = self;
 
-        view.addSubview(tableview)
+        self.view.addSubview(tableview)
+        
+        tableview.snp.makeConstraints { (make) in
+            make.top.equalTo(cv.snp.bottom);
+            make.width.bottom.equalTo(self.view);
+        }
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -290,7 +381,41 @@ class CalendarVC: UIViewController, UICollectionViewDelegate, UICollectionViewDa
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        return eventList.count;
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return seletedDay?.toString();
+    }
+    
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 80;
+    }
+    
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let footer = UIView();
+        
+        let btn = UIButton(type: .custom);
+        btn.setTitle("Add event", for: .normal);
+        btn.setTitleColor(UIColor.white, for: .normal);
+        
+        btn.backgroundColor = UIColor(red:0.20, green:0.69, blue:0.79, alpha:1.0);
+        btn.layer.cornerRadius = 15;
+        btn.clipsToBounds = true;
+        
+        btn.reactive.controlEvents(.touchUpInside).observeValues { _ in
+            self.navigationController?.pushViewController(DayVC(day: self.seletedDay!), animated: true)
+        }
+        
+        footer.addSubview(btn);
+        
+        btn.snp.makeConstraints({ (make) in
+            make.center.equalTo(footer);
+            make.size.equalTo(CGSize(width: 150, height: 40));
+        })
+        
+        return footer;
+        
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -298,11 +423,17 @@ class CalendarVC: UIViewController, UICollectionViewDelegate, UICollectionViewDa
         var cell: UITableViewCell! = tableview.dequeueReusableCell(withIdentifier: identifier)
 
         if cell == nil {
-            cell = UITableViewCell(style: .default, reuseIdentifier: identifier)
+            cell = UITableViewCell(style: .subtitle, reuseIdentifier: identifier)
             cell.accessoryType = .detailButton
         }
+        
+        let todayEvent = eventList[indexPath.row];
+        cell.textLabel?.text = "\(todayEvent.title) (\(todayEvent.remark))";
+        cell.detailTextLabel?.text = todayEvent.remark;
+        
 
         return cell
     }
+    
     
 }

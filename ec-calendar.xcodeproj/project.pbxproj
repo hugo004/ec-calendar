@@ -19,6 +19,7 @@
 		9A7A6D5F223FBDE200C56D32 /* EventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7A6D5E223FBDE200C56D32 /* EventView.swift */; };
 		9A7A6D61224085CA00C56D32 /* EventTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7A6D60224085CA00C56D32 /* EventTableViewCell.swift */; };
 		9A9A9B872241436800B51C93 /* ECDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9A9B862241436800B51C93 /* ECDate.swift */; };
+		9A9A9B89224251AB00B51C93 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9A9B88224251AB00B51C93 /* Helper.swift */; };
 		9AB4BD8D2202E96E00306E94 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB4BD8C2202E96E00306E94 /* AppDelegate.swift */; };
 		9AB4BD8F2202E96E00306E94 /* LaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB4BD8E2202E96E00306E94 /* LaunchViewController.swift */; };
 		9AB4BD922202E96E00306E94 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9AB4BD902202E96E00306E94 /* Main.storyboard */; };
@@ -39,6 +40,7 @@
 		9A7A6D5E223FBDE200C56D32 /* EventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventView.swift; sourceTree = "<group>"; };
 		9A7A6D60224085CA00C56D32 /* EventTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventTableViewCell.swift; sourceTree = "<group>"; };
 		9A9A9B862241436800B51C93 /* ECDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ECDate.swift; sourceTree = "<group>"; };
+		9A9A9B88224251AB00B51C93 /* Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
 		9AB4BD892202E96E00306E94 /* ec-calendar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ec-calendar.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9AB4BD8C2202E96E00306E94 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9AB4BD8E2202E96E00306E94 /* LaunchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchViewController.swift; sourceTree = "<group>"; };
@@ -187,6 +189,7 @@
 		9AB4BD9F2202EB3D00306E94 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				9A9A9B88224251AB00B51C93 /* Helper.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -330,6 +333,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9A7A6D61224085CA00C56D32 /* EventTableViewCell.swift in Sources */,
+				9A9A9B89224251AB00B51C93 /* Helper.swift in Sources */,
 				9A7A6D5B223FA56800C56D32 /* EventVC.swift in Sources */,
 				9AB4BD8F2202E96E00306E94 /* LaunchViewController.swift in Sources */,
 				9A9A9B872241436800B51C93 /* ECDate.swift in Sources */,
@@ -488,8 +492,9 @@
 			baseConfigurationReference = E85168C234927E855163157B /* Pods-ec-calendar.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 3LYNAY552L;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = "ec-calendar/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -497,6 +502,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.os.ec-calendar";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -507,8 +513,9 @@
 			baseConfigurationReference = B10978D273D50D13AFEDD848 /* Pods-ec-calendar.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 3LYNAY552L;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = "ec-calendar/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -516,6 +523,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.os.ec-calendar";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

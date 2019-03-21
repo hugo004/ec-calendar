@@ -13,6 +13,43 @@ struct Day {
     var weekday = 0;
 }
 
+struct ECDay {
+    var year: Int
+    var month: Int
+    var day: Int
+    var weekDay: Int
+    var events: [ECEvent]
+    
+    init(year:Int, month:Int, day:Int) {
+        self.year = year;
+        self.month = month;
+        self.day = day;
+        self.events = [];
+        self.weekDay = -1;
+    }
+    
+    func toString() -> String {
+        let monthStr = (month < 10) ? "0\(month+1)" : "\(month+1)";
+        let dayStr = (day < 10) ? "0\(day)" : "\(day)";
+        return "\(year)/\(monthStr)/\(dayStr)"
+    }
+    
+    func idString() -> String {
+        let monthStr = (month < 10) ? "0\(month)" : "\(month)";
+        let dayStr = (day < 10) ? "0\(day)" : "\(day)";
+
+        return "\(year)\(monthStr)\(dayStr)"
+    }
+}
+
+struct ECEvent: Codable {
+    var title: String
+    var location: String
+    var remark: String
+    var addCalendar: Bool
+}
+
+
 enum WeekDays: Int {
     case Mon = 1
     case Tue = 2
@@ -22,6 +59,17 @@ enum WeekDays: Int {
     case Sat = 6
     case Sun = 7
 }
+
+enum LocalDataKey: String {
+    case Event = "event"
+}
+
+//class ECEvnet: NSObject, NSCoding {
+//    var title: String
+//    var location: String
+//    var remark: String
+//    var addCalendar: Bool
+//}
 
 class ECDate {
     var month = "";
@@ -46,7 +94,6 @@ class ECDate {
     }
     
     func calculateWeekdays(lastWeekday: Int) -> Int {
-        print(lastWeekday)
         
         for _ in 0 ..< skipDay(weekday: WeekDays(rawValue: lastWeekday)!) {
             day.append(Day(day: -1, weekday: -1));

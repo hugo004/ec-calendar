@@ -30,10 +30,6 @@ class EventVC: UIViewController {
             self.dismiss(animated: true, completion: nil);
         }
         
-        eventView.ok.reactive.controlEvents(.touchUpInside).observeValues { _ in
-            self.eventView.cancel.sendActions(for: .touchUpInside)
-        }
-        
         
     }
     

@@ -8,11 +8,6 @@
 
 import UIKit
 
-struct CalendarDate {
-    var year: Int
-    var month: Int
-    var day: Int
-}
 
 class DateCVCell: UICollectionViewCell {
     
@@ -32,22 +27,22 @@ class DateCVCell: UICollectionViewCell {
     }()
     
     public
-        var date: CalendarDate?
-        var today: Date?
+        var today: ECDay?
     
     var isWeekend: Bool = false;
+    var isToday: Bool = false;
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
+        self.contentView.clipsToBounds      = true
+        self.contentView.layer.borderColor  = UIColor.lightGray.cgColor
+
         
+        normalStyle();
+
         self.contentView.addSubview(lblDate)
         self.contentView.addSubview(event)
-        
-        self.contentView.layer.borderWidth  = 1.0
-        self.contentView.layer.borderColor  = UIColor.lightGray.cgColor
-        self.contentView.layer.cornerRadius = frame.size.width / 2
-        self.contentView.clipsToBounds      = true
         
         
         lblDate.snp.makeConstraints { (make) in
@@ -65,30 +60,10 @@ class DateCVCell: UICollectionViewCell {
         super.prepareForReuse();
         
         lblDate.textColor = UIColor.black;
-        
-    }
-    
-    
-    func checkWeekDay(date:CalendarDate) -> Void {
         isWeekend = false;
-        
-        let format          = DateFormatter();
-        format.dateFormat   = "yyyy-MM-dd";
-        
-        let dateStr: String = "\(date.year)-\(date.month)-\(date.day)";
-        guard let currDate: Date = format.date(from: dateStr) else { return };
-        
-        today = currDate;
-        
-        let weekday = NSCalendar.current.component(.weekday, from: currDate);
-        // 1 = Sunday, 2 = Monday, etc
-        if (weekday == 1 || weekday == 7)
-        {
-            isWeekend = true;
-        }
+        isToday = false;
         
     }
-
     
     
     
@@ -96,7 +71,97 @@ class DateCVCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func showEvetn() -> Void {
-        event.backgroundColor = UIColor.lightGray;
+    
+    func circleStyle() -> Void {
+        self.contentView.layer.borderWidth  = 1.0
+        self.contentView.layer.cornerRadius = frame.size.width / 2
+    }
+    
+    func normalStyle() -> Void {
+        self.contentView.layer.borderWidth  = 0
+        self.contentView.layer.cornerRadius = 10;
+    }
+    
+    func highlighSunDay() -> Void {
+        lblDate.textColor = UIColor.red;
+        self.contentView.backgroundColor = UIColor.white;
+
+    }
+    
+    func hightlightToday(events: [ECEvent]) -> Void {
+        
+        let year: Int = Calendar.current.component(.year, from: Date());
+        let month: Int = Calendar.current.component(.month, from: Date()) - 1; //calendar month follow index start from 0..
+        let day: Int = Calendar.current.component(.day, from: Date());
+       let current = ECDay(year: year, month: month, day: day);
+        
+        if (
+            today?.day == current.day &&
+            today?.month == current.month &&
+            today?.year == current.year
+        )
+        {
+            today?.events = events;
+            isToday = true;
+            hightlightToday();
+        }
+        else
+        {
+            unhightlight();
+        }
+    }
+    
+    func hightlightToday() -> Void {
+        
+        self.contentView.backgroundColor = UIColor(red:0.65, green:0.78, blue:0.32, alpha:1.0);
+        lblDate.textColor = UIColor.white;
+    }
+    
+    func eventMark() -> Void {
+        if today?.events.count ?? 0 > 0
+        {
+            event.backgroundColor = UIColor.lightGray;
+        }
+        else
+        {
+            event.backgroundColor = UIColor.clear;
+        }
+    }
+    
+    func unhightlight() -> Void {
+        self.contentView.backgroundColor = UIColor.white
+        lblDate.textColor = UIColor.black;
+    }
+    
+    func hightlight() -> Void {
+        self.contentView.backgroundColor = UIColor(red:0.20, green:0.69, blue:0.79, alpha:1.0);
+        lblDate.textColor = UIColor.white;
+    }
+    
+    
+    override var isSelected: Bool {
+        didSet
+        {
+            if self.isSelected
+            {
+                hightlight();
+            }
+            else
+            {
+                if today?.weekDay == 7
+                {
+                    highlighSunDay();
+                }
+                else if isToday
+                {
+                    hightlightToday();
+                }
+                else
+                {
+                    unhightlight();
+
+                }
+            }
+        }
     }
 }
