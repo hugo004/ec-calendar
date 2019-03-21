@@ -26,7 +26,6 @@ class DayVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     var hourPM = 12;
     var timeTicketCounter = 15;
     var timeTicketList: Array<TimeTicket>!
-    var eventList: [ECEvent] = []
     
      init(day: ECDay) {
         super.init(nibName: nil, bundle: nil);
@@ -154,7 +153,7 @@ class DayVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         }
         
         let ticket = timeTicketList[indexPath.section];
-        cell.textLabel?.text = ":\(String(ticket.times[indexPath.row])) min";
+        cell.textLabel?.text = ":\(String(ticket.times[indexPath.row]))";
         
         return cell;
     }
@@ -170,17 +169,29 @@ class DayVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         //MARK: - add event
         eventView.ok.reactive.controlEvents(.touchUpInside).observeValues { _ in
             eventVc.dismiss(animated: true, completion: {
-               let event = ECEvent(
+               var event = ECEvent(
                     title: eventView.title.text!,
                     location: eventView.location.text!,
-                    remark: eventView.remark.text!,
-                    addCalendar: eventView.switchView.isOn
+                    remark: eventView.remark.text!
                 )
                 
-                self.eventList.append(event);
+                //set event date time
+                let ticket = self.timeTicketList[indexPath.section];
+                let daateStr = "\(self.today.toString()) \(indexPath.section):\(ticket.times[indexPath.row])";
+                event.startDate = self.stringToDateTime(dateString: daateStr);
+                event.endDate = event.startDate;
+                
+                //retrive previous event if have
+                let key = "\(LocalDataKey.Event)-\(self.today.idString())";
+                var eventList = Helper.localRetrieveEvents(key: key);
+                eventList.append(event);
                 
                 //save event to local, key format: event-20190320
-                Helper.localSaveEvents(data: self.eventList, key: "\(LocalDataKey.Event)-\(self.today.idString())");
+                Helper.localSaveEvents(data: eventList, key: key);
+                if (eventView.switchView.isOn)
+                {
+                    Helper.addEventToCalendar(myEvent: event);
+                }
                 self.backToCalendar();
             })
         }
@@ -199,6 +210,11 @@ class DayVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     }
     
+    func stringToDateTime(dateString:String) -> Date {
+        let df:DateFormatter = DateFormatter();
+        df.dateFormat = "yyyy/MM/dd HH:mm";
+        return df.date(from: dateString)!;
+    }
     
 
 }

@@ -8,18 +8,46 @@
 
 import UIKit
 
-class EventVC: UIViewController {
+class EventVC: UIViewController, UIPopoverPresentationControllerDelegate {
     
     let eventView = {
         return EventView();
     }();
-
+    
+    init(sourceView: UIView) {
+        super.init(nibName: nil, bundle: nil);
+        
+        initView();
+        eventView.layoutIfNeeded();
+        
+        self.preferredContentSize = eventView.frame.size;
+        self.modalPresentationStyle = UIModalPresentationStyle.popover;
+        
+        let popover: UIPopoverPresentationController = self.popoverPresentationController!;
+        popover.permittedArrowDirections = UIPopoverArrowDirection.any;
+        popover.sourceView = sourceView;
+        popover.sourceRect = sourceView.bounds;
+        popover.delegate = self;
+    }
+    
+    init() {
+        super.init(nibName: nil, bundle: nil)
+        initView();
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         self.view.backgroundColor = UIColor.lightText
-
-        // Do any additional setup after loading the view.
+        
+        
+    }
+    
+    func initView() -> Void {
         self.view.addSubview(eventView);
         eventView.snp.makeConstraints { (make) in
             make.center.equalTo(self.view);
@@ -29,19 +57,10 @@ class EventVC: UIViewController {
         eventView.cancel.reactive.controlEvents(.touchUpInside).observeValues{ _ in
             self.dismiss(animated: true, completion: nil);
         }
-        
-        
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+        return UIModalPresentationStyle.none;
     }
-    */
 
 }

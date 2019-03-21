@@ -8,6 +8,7 @@
 
 import ReactiveCocoa
 import UIKit
+import EventKit
 
 private let identifier = "Cell"
 private let header = "header"
@@ -17,7 +18,7 @@ struct Month {
     var day: Int
 }
 
-class CalendarVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UITableViewDataSource, UITableViewDelegate, UICollectionViewDelegateFlowLayout {
+class CalendarVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UITableViewDataSource, UITableViewDelegate, UICollectionViewDelegateFlowLayout, UIPopoverPresentationControllerDelegate {
     var cv: UICollectionView!
     var header: MonthHeaderView!
     var ecDate: [ECDate]!
@@ -27,21 +28,18 @@ class CalendarVC: UIViewController, UICollectionViewDelegate, UICollectionViewDa
 
     var tableview: UITableView!
     
-    var doubleSundayMode = true;
+    var isDoubleSunday = true;
     var seletedDay: ECDay?
-    var today: ECDay?
     
     var eventList: [ECEvent] = [];
+    var selectedDayPath: IndexPath?;
 
     override func viewDidLoad() {
         super.viewDidLoad()
         edgesForExtendedLayout = []
         view.backgroundColor = UIColor.white
 
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Calendar Mode",
-                                                                 style: .plain,
-                                                                 target: self,
-                                                                 action: #selector(showCalendarMode))
+//        setCalendarMode(); //toggle double Sun or Sat mode
         
         let year: Int = Calendar.current.component(.year, from: Date());
         let month: Int = Calendar.current.component(.month, from: Date()) - 1; //calendar month follow index start from 0..
@@ -61,27 +59,43 @@ class CalendarVC: UIViewController, UICollectionViewDelegate, UICollectionViewDa
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated);
         cv.reloadData();
+        
+        Helper.requestCalendarPermission();
     }
     
-    @objc func showCalendarMode() -> Void {
-        doubleSundayMode = !doubleSundayMode;
-        currMonth = 0;
-        header.lblMonth.text = ecDate[currMonth].month
+    func setCalendarMode() -> Void {
+        let doubleSunday =  UIBarButtonItem(title: "DoubleSun",
+                                            style: .plain,
+                                            target: self,
+                                            action: #selector(doubleSundayMode));
         
-        if (doubleSundayMode)
-        {
-            self.navigationItem.rightBarButtonItem?.title = "Double Sundday Mode";
-        }
-        else
-        {
-            self.navigationItem.rightBarButtonItem?.title =  "Double Saturday Mode";
-
-        }
-
-        initCalendarDataSource();
-        cv.reloadData()
+        let doubleSaturday =  UIBarButtonItem(title: "DoubleSat",
+                                              style: .plain,
+                                              target: self,
+                                              action: #selector(doubleSaturdayMode))
+        
+        self.navigationItem.rightBarButtonItems = [doubleSaturday, doubleSunday];
+        
     }
-
+    
+    @objc func doubleSundayMode() -> Void {
+        isDoubleSunday = true;
+        currMonth = 0;
+        header.lblMonth.text = ecDate[currMonth].month;
+        
+        initCalendarDataSource();
+        cv.reloadData();
+    }
+    
+    @objc func doubleSaturdayMode() -> Void {
+        isDoubleSunday = false;
+        currMonth = 0;
+        header.lblMonth.text = ecDate[currMonth].month;
+        
+        initCalendarDataSource();
+        cv.reloadData();
+    }
+    
     
     func isLeapYear() -> Bool {
         let year:Int = Calendar.current.component(.year, from: Date());
@@ -97,7 +111,7 @@ class CalendarVC: UIViewController, UICollectionViewDelegate, UICollectionViewDa
         var marTotalDay = isLeapYear() ? 31 : 30; //ec calendar set march total for leap year instead of feb, feb awayls 29 total
         var augTotalDay = isLeapYear() ? 31 : 30; //double Sat mode
         
-        if doubleSundayMode
+        if isDoubleSunday
         {
             augTotalDay = 31;
         }
@@ -123,14 +137,14 @@ class CalendarVC: UIViewController, UICollectionViewDelegate, UICollectionViewDa
         for month in monthDict {
             let myDate = ECDate(month: month.name, totalDay: month.days);
             
-            if doubleSundayMode == false && month.name == "Dec"
+            if isDoubleSunday == false && month.name == "Dec"
             {
                 startWeekday = WeekDays.Fri.rawValue;
             }
 
             startWeekday = myDate.calculateWeekdays(lastWeekday: startWeekday);
 
-            if doubleSundayMode
+            if isDoubleSunday
             {
                 if myDate.day.last?.weekday == WeekDays.Sun.rawValue {
                     startWeekday = WeekDays.Sun.rawValue
@@ -170,7 +184,7 @@ class CalendarVC: UIViewController, UICollectionViewDelegate, UICollectionViewDa
         cv.register(DateCVCell.self, forCellWithReuseIdentifier: identifier)
         cv.register(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header")
 
-        header = MonthHeaderView(frame: CGRect(x: 0, y: 10, width: view.frame.size.width, height: 50))
+        header = MonthHeaderView(frame: CGRect(x: 0, y: 10, width: view.frame.size.width, height: 40))
         header.backgroundColor = UIColor.white
         header.layer.borderWidth = 1.0
         header.layer.borderColor = UIColor.lightText.cgColor
@@ -228,6 +242,8 @@ class CalendarVC: UIViewController, UICollectionViewDelegate, UICollectionViewDa
         let evnets = Helper.localRetrieveEvents(key: "\(LocalDataKey.Event)-\(cell.today?.idString() ?? "")");
         cell.today?.events = evnets;
         cell.eventMark();
+        
+
         if today.day < 0 {
             cell.isHidden = true;
         }else {
@@ -244,14 +260,16 @@ class CalendarVC: UIViewController, UICollectionViewDelegate, UICollectionViewDa
 
         return cell
     }
+    
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let cell = collectionView.cellForItem(at: indexPath) as! DateCVCell
-        
         seletedDay = cell.today;
-        
         eventList = cell.today?.events ?? [];
         tableview.reloadData();
+        
+        selectedDayPath = indexPath;
+
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
@@ -367,6 +385,7 @@ class CalendarVC: UIViewController, UICollectionViewDelegate, UICollectionViewDa
         tableview.backgroundColor = UIColor.white;
         tableview.delegate = self;
         tableview.dataSource = self;
+        
 
         self.view.addSubview(tableview)
         
@@ -435,5 +454,36 @@ class CalendarVC: UIViewController, UICollectionViewDelegate, UICollectionViewDa
         return cell
     }
     
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        eventList.remove(at: indexPath.row);
+        
+        let key = "\(LocalDataKey.Event)-\(seletedDay!.idString())";
     
+        //save event to local, key format: event-20190320
+        Helper.localSaveEvents(data: eventList, key: key);
+        
+        if selectedDayPath != nil
+        {
+            cv.reloadItems(at: [selectedDayPath!]); //for update event list after deleted
+        }
+
+        tableView.reloadData();
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+    }
+    
+    func popoverPresent(source: UIView) -> Void {
+        
+        let vc = EventVC(sourceView: source);
+        self.present(vc, animated: true, completion: nil);
+
+    }
+    
+    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+        return UIModalPresentationStyle.none;
+    }
+    
+
 }

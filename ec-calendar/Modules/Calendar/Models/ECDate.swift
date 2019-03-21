@@ -47,6 +47,17 @@ struct ECEvent: Codable {
     var location: String
     var remark: String
     var addCalendar: Bool
+    var startDate: Date?
+    var endDate: Date?
+    
+    
+    init(title: String, location: String, remark: String) {
+        self.title = title;
+        self.location = location;
+        self.remark = remark;
+        self.addCalendar = false;
+    }
+    
 }
 
 
