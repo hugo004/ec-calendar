@@ -15,7 +15,7 @@ class EventView: UIView {
         btn.layer.cornerRadius  = 5.0
         btn.clipsToBounds       = true
         
-        btn.setTitle("Add", for: .normal)
+        btn.setTitle(Helper.Localized(key: "common_add"), for: .normal)
         btn.setTitleColor(UIColor.white, for: .normal)
         
         return btn
@@ -28,14 +28,14 @@ class EventView: UIView {
         btn.clipsToBounds       = true
         
         btn.setTitleColor(UIColor.white, for: .normal)
-        btn.setTitle("Cancel", for: .normal)
+        btn.setTitle(Helper.Localized(key: "common_cancel"), for: .normal)
         
         return btn
         }()!
     
     let title: UITextField = {
         let txt     = UITextField()
-        txt.placeholder = "Title";
+        txt.placeholder = Helper.Localized(key: "event_title");
         txt.borderStyle = .roundedRect;
         
         return txt;
@@ -43,7 +43,7 @@ class EventView: UIView {
     
     let location: UITextField = {
         let txt     = UITextField()
-        txt.placeholder = "Location";
+        txt.placeholder = Helper.Localized(key: "event_location");
         txt.borderStyle = .roundedRect;
 
         return txt;
@@ -67,7 +67,7 @@ class EventView: UIView {
     
     let switchText: UILabel = {
         let lbl = UILabel();
-        lbl.text = "Add to calendar";
+        lbl.text = Helper.Localized(key: "event_addToCalendar");
         
         return lbl;
     }()

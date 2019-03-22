@@ -34,7 +34,6 @@ class MonthHeaderView: UIView {
     
     let lblMonth: UILabel = {
         let lbl             = UILabel()
-        lbl.text            = "Month"
         lbl.font            = .systemFont(ofSize: 25, weight: .bold)
         lbl.numberOfLines   = 0
         lbl.lineBreakMode   = NSLineBreakMode.byWordWrapping

@@ -1,0 +1,59 @@
+/* 
+  Localizable.strings
+  ec-calendar
+
+  Created by Hugo on 22/3/2019.
+  Copyright © 2019 Hugo. All rights reserved.
+*/
+
+
+//common
+"common_add" = "Add";
+"common_cancel" = "Cancel";
+"common_skip" = "Skip";
+"common_nextpage" = "Next";
+
+//home
+"home_calendar" = "Calendar";
+"home_diary" = "Diary";
+"home_setting" = "Setting";
+
+//setting
+"setting_aboutapp" = "About App";
+"setting_language" = "Langauge";
+"setting_permission" = "Permission";
+
+//calendar
+"calendar_sun" = "Sun";
+"calendar_sat" = "Sat";
+"calendar_fri" = "Fri";
+"calendar_thu" = "Thu";
+"calendar_wed" = "Wed";
+"calendar_tue" = "Tue";
+"calendar_mon" = "Mon";
+"calendar_jan" = "Jan";
+"calendar_feb" = "Feb";
+"calendar_mar" = "Mar";
+"calendar_apr" = "Apr";
+"calendar_may" = "May";
+"calendar_jun" = "Jun";
+"calendar_jul" = "Jul";
+"calendar_aug" = "Aug";
+"calendar_sep" = "Sep";
+"calendar_oct" = "Oct";
+"calendar_nov" = "Nov";
+"calendar_dec" = "Dec";
+"calendar_doubleSun" = "Double Sunday Mode";
+"calendar_doubleSat" = "Double Saturday Mode";
+
+//event
+"event_add" = "Add New Event";
+"event_title" = "Title";
+"event_location" = "Location";
+"event_remark" = "Remark";
+"event_startTime" = "Start At";
+"event_addToCalendar" = "Add to Calendar Application";
+
+//language
+"language_chinese" = "Chinese";
+"language_english" = "English";

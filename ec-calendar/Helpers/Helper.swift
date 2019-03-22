@@ -106,4 +106,37 @@ class Helper {
         return (date != nil) ? df.string(from:date!) : "";
     }
 
+    
+    static func Localized(key:String) -> String {
+        return NSLocalizedString(key, comment: "")
+    }
+    
+    static func changeLanguage(code:String) -> Void {
+        UserDefaults.standard.set([code], forKey: "AppleLanguages");
+        UserDefaults.standard.synchronize();
+    }
+    
+    static func currentLanguage() -> String {
+        return UserDefaults.standard.value(forKey: "AppleLanguages") as! String;
+    }
+
+    static func isDoubleSundayMode() -> Bool {
+        guard let isDoubleSun: Bool =  UserDefaults.standard.value(forKey: "isDoubleSundayMode") as? Bool else {
+            return false;
+        };
+        
+        return isDoubleSun;
+    }
+    
+    static func changeCalendarMode() -> Void {
+        //toggle calendar between double sunday and saturday
+        if (isDoubleSundayMode())
+        {
+            UserDefaults.standard.set(false, forKey: "isDoubleSundayMode");
+        }
+        else
+        {
+            UserDefaults.standard.set(true, forKey: "isDoubleSundayMode");
+        }
+    }
 }

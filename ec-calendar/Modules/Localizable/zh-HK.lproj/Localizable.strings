@@ -1,0 +1,59 @@
+/*
+ Localizable.strings
+ ec-calendar
+ 
+ Created by Hugo on 22/3/2019.
+ Copyright © 2019 Hugo. All rights reserved.
+ */
+
+
+//common
+"common_add" = "新增";
+"common_cancel" = "取消";
+"common_skip" = "跳過";
+"common_nextpage" = "下一頁";
+
+//home
+"home_calendar" = "日曆";
+"home_diary" = "日記";
+"home_setting" = "設置";
+
+//setting
+"setting_aboutapp" = "關於應用";
+"setting_language" = "語言";
+"setting_permission" = "權限管理";
+
+//calendar
+"calendar_sun" = "日";
+"calendar_sat" = "六";
+"calendar_fri" = "五";
+"calendar_thu" = "四";
+"calendar_wed" = "三";
+"calendar_tue" = "二";
+"calendar_mon" = "一";
+"calendar_jan" = "一月";
+"calendar_feb" = "二月";
+"calendar_mar" = "三月";
+"calendar_apr" = "四月";
+"calendar_may" = "五月";
+"calendar_jun" = "六月";
+"calendar_jul" = "七月";
+"calendar_aug" = "八月";
+"calendar_sep" = "九月";
+"calendar_oct" = "十月";
+"calendar_nov" = "十一月";
+"calendar_dec" = "十二月";
+"calendar_doubleSun" = "雙星期日模式";
+"calendar_doubleSat" = "雙星期六模式";
+
+//event
+"event_add" = "新增事件";
+"event_title" = "標題";
+"event_location" = "地點";
+"event_remark" = "備註";
+"event_startTime" = "開始時間";
+"event_addToCalendar" = "新增至日曆應用程式";
+
+//language
+"language_chinese" = "中文";
+"language_english" = "英文";

@@ -34,10 +34,10 @@ class EventTableViewCell: UITableViewCell {
         lblRemark = UILabel();
         lblTime = UILabel();
         
-        lblTitle.text = "Title:";
-        lbllocation.text = "Location:";
-        lblRemark.text = "Remark:";
-        lblTime.text = "Start Time";
+        lblTitle.text = "\(Helper.Localized(key: "event_title")):";
+        lbllocation.text = "\(Helper.Localized(key: "event_location")):";
+        lblRemark.text = "\(Helper.Localized(key: "event_remark")):";
+        lblTime.text = "\(Helper.Localized(key: "event_startTime")):";
         
         title = UILabel();
         

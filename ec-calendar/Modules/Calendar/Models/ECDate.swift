@@ -75,13 +75,6 @@ enum LocalDataKey: String {
     case Event = "event"
 }
 
-//class ECEvnet: NSObject, NSCoding {
-//    var title: String
-//    var location: String
-//    var remark: String
-//    var addCalendar: Bool
-//}
-
 class ECDate {
     var month = "";
     var totalDay = 0;

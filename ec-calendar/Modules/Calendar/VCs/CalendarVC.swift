@@ -18,7 +18,7 @@ struct Month {
     var day: Int
 }
 
-class CalendarVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UITableViewDataSource, UITableViewDelegate, UICollectionViewDelegateFlowLayout, UIPopoverPresentationControllerDelegate {
+class CalendarVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UITableViewDataSource, UITableViewDelegate, UICollectionViewDelegateFlowLayout {
     var cv: UICollectionView!
     var header: MonthHeaderView!
     var ecDate: [ECDate]!
@@ -38,6 +38,9 @@ class CalendarVC: UIViewController, UICollectionViewDelegate, UICollectionViewDa
         super.viewDidLoad()
         edgesForExtendedLayout = []
         view.backgroundColor = UIColor.white
+        self.navigationController?.navigationBar.barTintColor = UIColor.white;
+        self.navigationController?.navigationBar.isTranslucent = false;
+
 
 //        setCalendarMode(); //toggle double Sun or Sat mode
         
@@ -111,7 +114,7 @@ class CalendarVC: UIViewController, UICollectionViewDelegate, UICollectionViewDa
         var marTotalDay = isLeapYear() ? 31 : 30; //ec calendar set march total for leap year instead of feb, feb awayls 29 total
         var augTotalDay = isLeapYear() ? 31 : 30; //double Sat mode
         
-        if isDoubleSunday
+        if Helper.isDoubleSundayMode()
         {
             augTotalDay = 31;
         }
@@ -121,23 +124,23 @@ class CalendarVC: UIViewController, UICollectionViewDelegate, UICollectionViewDa
         }
 
         let monthDict = [
-            (name:"Jan", days:31),
-            (name:"Feb", days:29),
-            (name:"Mar", days:marTotalDay),
-            (name:"Apr", days:30),
-            (name:"May", days:31),
-            (name:"Jun", days:30),
-            (name:"Jul", days:31),
-            (name:"Aug", days:augTotalDay),
-            (name:"Sep", days:30),
-            (name:"Oct", days:31),
-            (name:"Nov", days:30),
-            (name:"Dec", days:31)
+            (name:Helper.Localized(key: "calendar_jan"), days:31),
+            (name:Helper.Localized(key: "calendar_feb"), days:29),
+            (name:Helper.Localized(key: "calendar_mar"), days:marTotalDay),
+            (name:Helper.Localized(key: "calendar_apr"), days:30),
+            (name:Helper.Localized(key: "calendar_may"), days:31),
+            (name:Helper.Localized(key: "calendar_jun"), days:30),
+            (name:Helper.Localized(key: "calendar_jul"), days:31),
+            (name:Helper.Localized(key: "calendar_aug"), days:augTotalDay),
+            (name:Helper.Localized(key: "calendar_sep"), days:30),
+            (name:Helper.Localized(key: "calendar_oct"), days:31),
+            (name:Helper.Localized(key: "calendar_nov"), days:30),
+            (name:Helper.Localized(key: "calendar_dec"), days:31)
         ];
         for month in monthDict {
             let myDate = ECDate(month: month.name, totalDay: month.days);
             
-            if isDoubleSunday == false && month.name == "Dec"
+            if isDoubleSunday == false && month.name == Helper.Localized(key: "calendar_dec")
             {
                 startWeekday = WeekDays.Fri.rawValue;
             }
@@ -213,6 +216,12 @@ class CalendarVC: UIViewController, UICollectionViewDelegate, UICollectionViewDa
 
         self.view.addSubview(header)
         self.view.addSubview(cv)
+        
+        header.snp.makeConstraints { (make) in
+            make.top.equalTo(self.view.safeAreaLayoutGuide);
+            make.width.equalTo(self.view);
+            make.height.equalTo(40);
+        }
 
         cv.snp.makeConstraints { make in
             make.top.equalTo(header.snp.bottom);
@@ -289,39 +298,39 @@ class CalendarVC: UIViewController, UICollectionViewDelegate, UICollectionViewDa
         var sun, mon, tue, wed, thu, fri, sat: UILabel!;
         
         sun = UILabel();
-        sun.text = "Sun";
+        sun.text = Helper.Localized(key: "calendar_sun");
         sun.textColor = UIColor.red;
         sun.textAlignment = .center;
         
         
         mon = UILabel();
-        mon.text = "Mon";
+        mon.text = Helper.Localized(key: "calendar_mon");
         mon.textColor = UIColor.black;
         mon.textAlignment = .center;
 
         tue = UILabel();
-        tue.text = "Tue";
+        tue.text = Helper.Localized(key: "calendar_tue");
         tue.textColor = UIColor.black;
         tue.textAlignment = .center;
 
         
         wed = UILabel();
-        wed.text = "Wed";
+        wed.text = Helper.Localized(key: "calendar_wed");
         wed.textColor = UIColor.black;
         wed.textAlignment = .center;
 
         thu = UILabel();
-        thu.text = "Thu";
+        thu.text = Helper.Localized(key: "calendar_thu");
         thu.textColor = UIColor.black;
         thu.textAlignment = .center;
 
         fri = UILabel();
-        fri.text = "Fri";
+        fri.text = Helper.Localized(key: "calendar_fri");
         fri.textColor = UIColor.black;
         fri.textAlignment = .center;
 
         sat = UILabel();
-        sat.text = "Sat";
+        sat.text = Helper.Localized(key: "calendar_sat");
         sat.textColor = UIColor.black;
         sat.textAlignment = .center;
 
@@ -415,7 +424,7 @@ class CalendarVC: UIViewController, UICollectionViewDelegate, UICollectionViewDa
         let footer = UIView();
         
         let btn = UIButton(type: .custom);
-        btn.setTitle("Add event", for: .normal);
+        btn.setTitle(Helper.Localized(key: "event_add"), for: .normal);
         btn.setTitleColor(UIColor.white, for: .normal);
         
         btn.backgroundColor = UIColor(red:0.20, green:0.69, blue:0.79, alpha:1.0);
@@ -444,6 +453,7 @@ class CalendarVC: UIViewController, UICollectionViewDelegate, UICollectionViewDa
         if cell == nil {
             cell = EventTableViewCell(style: .subtitle, reuseIdentifier: identifier)
             cell.accessoryType = .detailButton
+            cell.selectionStyle = .none;
         }
         
         let todayEvent = eventList[indexPath.row];
@@ -475,17 +485,6 @@ class CalendarVC: UIViewController, UICollectionViewDelegate, UICollectionViewDa
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
     }
-    
-    func popoverPresent(source: UIView) -> Void {
-        
-        let vc = EventVC(sourceView: source);
-        self.present(vc, animated: true, completion: nil);
 
-    }
-    
-    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
-        return UIModalPresentationStyle.none;
-    }
-    
 
 }
