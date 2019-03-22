@@ -23,10 +23,12 @@ class DiaryVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     var existDays = 0
     
     
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.white
+        
         
         initDiaryDataSource()
         initView()
@@ -185,7 +187,39 @@ class DiaryVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if self.monthDaysArray.count > 0{
+            self.monthDaysArray.sort(by: {$0.day < $1.day})//sort
+            let year = getCurYear()
+            if Helper.isDoubleSundayMode() {
+                if isLoopYear(year: year){
+                    if self.monthDaysArray.last?.month == 9 && (self.monthDaysArray.last?.day)! > 29{
+                        return self.monthDaysArray.count-1
+                    }
+                    
+                }else{
+                    if self.monthDaysArray.last?.month == 3 && (self.monthDaysArray.last?.day)! > 30{
+                        return self.monthDaysArray.count-1
+                    }
+                }
+            }else{
+                if isLoopYear(year: year){
+                    
+                }else{
+                    if (self.monthDaysArray.last?.day)! > 28{
+                        return self.monthDaysArray.count-1
+                    }
+                }
+            }
+        }
         return self.monthDaysArray.count
+    }
+    
+    func isLoopYear(year:Int) -> Bool {
+         if (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0 && year % 3200 != 0){
+            return true
+         }else{
+            return false
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
