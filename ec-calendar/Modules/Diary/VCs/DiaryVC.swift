@@ -158,7 +158,6 @@ class DiaryVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         self.navigationItem.rightBarButtonItem = addButton
         
-        
         let headerHeight: CGFloat = 40;
         let navigationBarHeight: CGFloat = self.navigationController!.navigationBar.frame.height
         
@@ -220,6 +219,20 @@ class DiaryVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         self.view.addSubview(header)
         self.view.addSubview(tv)
         
+        
+        let btnAdd = UIButton();
+        btnAdd.setBackgroundImage(UIImage(named: "btn-plus"), for: .normal);
+        self.view.addSubview(btnAdd);
+        
+        btnAdd.reactive.controlEvents(.touchUpInside).observeValues { _ in
+            self.addDiary();
+        }
+        
+        btnAdd.snp.makeConstraints { (make) in
+            make.bottom.right.equalTo(self.view.safeAreaLayoutGuide).offset(-20);
+        }
+
+        
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -240,7 +253,7 @@ class DiaryVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         cell.lblWeather.text = "\(months[self.currMonth].diaryDays[indexPath.row].weather)"
         
         let image = months[self.currMonth].diaryDays[indexPath.row].image
-        let crImage = processImageToCell(image: image!)
+        let crImage = processImageToCell(image: UIImage(data: image)!)
         cell.backgroundView = UIImageView(image: crImage)
         
         return cell

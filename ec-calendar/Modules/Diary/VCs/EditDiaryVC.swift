@@ -122,7 +122,7 @@ class EditDiaryVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
         if indexPath.section == 0 {
             //let image = UIImage(named: "test")
             imageView.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 300)
-            imageView.image = _diary.image
+            imageView.image = UIImage(data: _diary.image)
             cell.addSubview(imageView)
             cell.txtInput.isEnabled = false
         }else if indexPath.section == 1 {

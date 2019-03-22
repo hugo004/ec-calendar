@@ -8,7 +8,7 @@
 
 import UIKit
 
-struct DiaryMonth {
+struct DiaryMonth: Codable {
     var month: String
     var diaryDays: [Diary]
     

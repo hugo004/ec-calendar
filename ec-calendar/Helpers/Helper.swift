@@ -28,6 +28,21 @@ class Helper {
         return events ?? [];
     }
     
+    static func localSaveDiary(data: [Diary], key: String) -> Void {
+        let encoded = try? PropertyListEncoder().encode(data); //custom object need encode first
+        UserDefaults.standard.setValue(encoded, forKey: key);
+        UserDefaults.standard.synchronize()
+    }
+    
+    static func localRetrieveDiary(key: String) -> [Diary] {
+        var diarys: [Diary]?;
+        if let data = UserDefaults.standard.value(forKey: key) as? Data {
+            diarys = try? PropertyListDecoder().decode([Diary].self, from: data);
+        }
+        
+        return diarys ?? [];
+    }
+    
     static func addEventToCalendar(myEvent:ECEvent) -> Void {
         let eventStore: EKEventStore = EKEventStore();
         

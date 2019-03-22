@@ -52,8 +52,7 @@ class DiaryDetailVC: UIViewController {
         scrollView.frame = CGRect(x: 0, y: navigationBarHeight+barHeight, width: self.view.frame.size.width, height: self.view.frame.size.height)
         
         imageView.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 300)
-        imageView.image = _diary.image
-        //imageView.backgroundColor = UIColor.blue
+        imageView.image = UIImage(data: _diary.image)        //imageView.backgroundColor = UIColor.blue
         
         imagetitle.frame = CGRect(x: 0, y: imageView.frame.size.height - 50, width: self.view.frame.size.width, height: 50)
         imagetitle.text = _diary.title

@@ -8,13 +8,13 @@
 
 import UIKit
 
-struct Diary{
+struct Diary: Codable{
     var date: Date
     var week: String
     var weather: String
     var content: String
     var title: String
-    var image: UIImage?
+    var image: Data
     
     init(date:Date,week:String,weather:String,content:String,title:String,image:UIImage) {
         self.date = date
@@ -22,7 +22,7 @@ struct Diary{
         self.weather = weather
         self.content = content
         self.title = title
-        self.image = image
+        self.image = image.pngData()!;
     }
     
 }

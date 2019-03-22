@@ -187,6 +187,7 @@ class AddDiaryVC: UIViewController, UINavigationControllerDelegate, UIImagePicke
         let day = Diary(date: datePicker.date, week: "123", weather: txtWeather.text!, content: txtContent.text!, title: txtTitle.text!, image: imagesave)
         
         delegate.diaryEnter(diary: day)
+        Helper.localSaveDiary(data: [day], key: "myDiary")
         self.navigationController?.popViewController(animated: true)
         //self.dismiss(animated: true, completion: nil)
         
