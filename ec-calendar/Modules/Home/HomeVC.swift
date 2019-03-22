@@ -24,8 +24,8 @@ class HomeVC: UITabBarController {
         return vc
     }()
     
-    var diary: UIViewController = {
-        let vc = UIViewController()
+    var diary: DiaryVC = {
+        let vc = DiaryVC()
         vc.tabBarItem = UITabBarItem(title: Helper.Localized(key: "home_diary"), image: UIImage(named:"icon-document"), tag: 1)
 
         return vc
