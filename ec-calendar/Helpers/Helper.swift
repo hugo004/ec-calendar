@@ -47,6 +47,7 @@ class Helper {
                     event.startDate = myEvent.startDate;
                     event.endDate = myEvent.endDate;
                     event.calendar = eventStore.defaultCalendarForNewEvents;
+                    event.addAlarm(EKAlarm(absoluteDate: event.startDate));
                     
                     do
                     {
@@ -90,6 +91,19 @@ class Helper {
         }
         
         return havePermission
+    }
+    
+    func string2Date(dateString:String) -> Date {
+        let df:DateFormatter = DateFormatter();
+        df.dateFormat = "yyyy/MM/dd HH:mm";
+        return df.date(from: dateString)!;
+    }
+    
+    
+    static func date2TimeString(date:Date?) -> String {
+        let df:DateFormatter = DateFormatter();
+        df.dateFormat = "HH:mm";
+        return (date != nil) ? df.string(from:date!) : "";
     }
 
 }

@@ -439,16 +439,18 @@ class CalendarVC: UIViewController, UICollectionViewDelegate, UICollectionViewDa
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let identifier = "cell"
-        var cell: UITableViewCell! = tableview.dequeueReusableCell(withIdentifier: identifier)
+        var cell: EventTableViewCell! = tableview.dequeueReusableCell(withIdentifier: identifier) as? EventTableViewCell
 
         if cell == nil {
-            cell = UITableViewCell(style: .subtitle, reuseIdentifier: identifier)
+            cell = EventTableViewCell(style: .subtitle, reuseIdentifier: identifier)
             cell.accessoryType = .detailButton
         }
         
         let todayEvent = eventList[indexPath.row];
-        cell.textLabel?.text = "\(todayEvent.title) (\(todayEvent.remark))";
-        cell.detailTextLabel?.text = todayEvent.remark;
+        cell.title?.text = "\(todayEvent.title) (\(todayEvent.remark))";
+        cell.remark?.text = todayEvent.remark;
+        cell.location.text = todayEvent.location;
+        cell.eventTime.text = Helper.date2TimeString(date: todayEvent.startDate);
         
 
         return cell
