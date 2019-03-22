@@ -65,7 +65,7 @@ class TestViewController: UIViewController {
         
         //terry's vc id
         terry.reactive.controlEvents(UIControl.Event.touchUpInside).observe { _ in
-            self.linkToMyVC(id: "sampleVC")
+            self.navigationController?.pushViewController(SettingVC(), animated: true)
         }
         
         //renee's vc id
