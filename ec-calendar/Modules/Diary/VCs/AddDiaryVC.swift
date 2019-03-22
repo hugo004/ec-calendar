@@ -198,6 +198,8 @@ class AddDiaryVC: UIViewController, UINavigationControllerDelegate, UIImagePicke
     
     
     
+    
+    
     @objc func Submit(_ sender:UIButton!)
     {
         /*let imageData:NSData = imagesave.pngData()! as NSData
@@ -240,16 +242,15 @@ class AddDiaryVC: UIViewController, UINavigationControllerDelegate, UIImagePicke
             UIImagePickerController.SourceType.camera) {
             
             
-            
+            imagePicker.sourceType = .camera
             imagePicker.delegate = self
-            imagePicker.sourceType =
-                UIImagePickerController.SourceType.camera
-            imagePicker.mediaTypes = [kUTTypeImage as String]
-            imagePicker.allowsEditing = false
+            
+            /*imagePicker.mediaTypes = [kUTTypeImage as String]
+            imagePicker.allowsEditing = false*/
             
             self.present(imagePicker, animated: true,
                          completion: nil)
-            newMedia = true
+            //newMedia = true
         }
         
         

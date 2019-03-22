@@ -60,7 +60,7 @@
 "diary_edit_alert_cancel" = "Cancel";
 "diary_edit_alert_photoBook" = "Album";
 "diary_edit_alert_camera" = "Camera";
-"diary_add_lblContent" = "Need to change a photo?";
+"diary_edit_alert_title" = "Need to change a photo?";
 "diary_edit_alert_warming_message" = "Diary is existing!";
 "diary_edit_alert_warming_title" = "Can't add a new diary";
 

@@ -60,7 +60,7 @@
 "diary_edit_alert_cancel" = "取消";
 "diary_edit_alert_photoBook" = "相簿";
 "diary_edit_alert_camera" = "相機";
-"diary_add_lblContent" = "需要更改圖片？";
+"diary_edit_alert_title" = "需要更改圖片？";
 "diary_edit_alert_warming_message" = "日記已存在";
 "diary_edit_alert_warming_title" = "無法加入日記";
 

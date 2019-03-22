@@ -70,7 +70,7 @@ class EditDiaryVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
             }
         }
         
-        if (isExist && m != month) || (isExist && m == month) {
+        if (isExist && m != month) {
             let alert = UIAlertController(title: Helper.Localized(key: "diary_edit_alert_warming_title"), message: Helper.Localized(key: "diary_edit_alert_warming_message"), preferredStyle: .alert)
             let action = UIAlertAction(title: "OK!", style: .default) {
                 (UIAlertAction) in self
@@ -96,7 +96,7 @@ class EditDiaryVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
         
             let viewControllers: [UIViewController] = self.navigationController!.viewControllers as [UIViewController]
             self.navigationController!.popToViewController(viewControllers[viewControllers.count-3], animated: true)
-        } else{
+        } else if (isExist && m == month){
             
             let day = Diary(year: y, month: m, day: d, weather:titleCell.txtInput.text!, content: txtContent.text!, title: titleCell.txtInput.text!, image: imageView.image!)
             finishDelegate.diaryEdit(diary: day)
@@ -179,7 +179,7 @@ class EditDiaryVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
         }
         
         let openCamera = UIAlertAction(title: names[1], style: .default) { (action) in
-            
+            self.Camareause()
         }
         
         controller.addAction(openPhoto)
@@ -196,6 +196,28 @@ class EditDiaryVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
             imageView.image = image
         }
         picker.dismiss(animated: true, completion: nil)
+        
+    }
+    
+    @objc func Camareause()
+    {
+        
+        
+        if UIImagePickerController.isSourceTypeAvailable(
+            UIImagePickerController.SourceType.camera) {
+            
+            
+            imagePicker.sourceType = .camera
+            imagePicker.delegate = self
+            
+            /*imagePicker.mediaTypes = [kUTTypeImage as String]
+             imagePicker.allowsEditing = false*/
+            
+            self.present(imagePicker, animated: true,
+                         completion: nil)
+            //newMedia = true
+        }
+        
         
     }
     
