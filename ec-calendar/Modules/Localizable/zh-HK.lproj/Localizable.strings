@@ -57,3 +57,13 @@
 //language
 "language_chinese" = "中文";
 "language_english" = "英文";
+
+
+// intro
+"EC_Diary" = "EC Diary";
+"EC_Calendar" = "EC Calendar";
+"second_body" = "一個簡單的日曆。每年每月都是相同的架構。";
+"third_body" = "容易記住那天我們做了什麼。";
+"forth_body" = "更環保。";
+"fifth_body" = "立刻開始使用吧！";
+"next" = "下一頁";

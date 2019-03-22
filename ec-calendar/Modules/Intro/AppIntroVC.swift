@@ -11,7 +11,6 @@ import Onboard
 import SnapKit
 
 class AppIntroVC: UIViewController {
-    
     let introVC: OnboardingViewController = {
         let vc = OnboardingViewController()
         vc.backgroundImage = UIImage(named: "finalBackground")
@@ -28,50 +27,49 @@ class AppIntroVC: UIViewController {
     
     func initIntroView() -> Void
     {
-        let firstPage = OnboardingContentViewController(title: "EC Diary", body: nil, image: UIImage(named: "launch"), buttonText: "next", action: ({
+        
+        let firstPage = OnboardingContentViewController(title: Helper.Localized(key: "EC_Diary"), body: nil, image: UIImage(named: "launch"), buttonText:  Helper.Localized(key: "next"), action: ({
             //TODO action
             self.introVC.moveNextPage()
             
             
         }))
         
-        let secondPage = OnboardingContentViewController(title: "EC Calendar", body: "A simple calendar ", image: UIImage(named: "launch"), buttonText: "next", action: ({
+        let secondPage = OnboardingContentViewController(title: Helper.Localized(key: "EC_Calendar"), body: Helper.Localized(key: "second_body"), image: UIImage(named: "launch"), buttonText: Helper.Localized(key: "next"), action: ({
             //TODO action
             self.introVC.moveNextPage()
         }))
         
         
         
-        let thirdPage = OnboardingContentViewController(title: "EC Calendar", body: "Easy to remember what we did in that day", image: UIImage(named: "acloud"), buttonText: "next", action: ({
+        let thirdPage = OnboardingContentViewController(title: Helper.Localized(key: "EC_Calendar"), body: Helper.Localized(key: "third_body"), image: UIImage(named: "acloud"), buttonText: Helper.Localized(key: "next"), action: ({
+            //TODO action
+            self.introVC.moveNextPage()
+            
+        }))
+        
+        let forthPage = OnboardingContentViewController(title: Helper.Localized(key: "EC_Calendar"), body: Helper.Localized(key: "forth_body"), image: UIImage(named: "tree"), buttonText: Helper.Localized(key:  "next"), action: ({
+            //TODO action
+            self.introVC.moveNextPage()
+            
+        }))
+        
+        let fifthPage = OnboardingContentViewController(title: Helper.Localized(key: "EC_Diary"), body: Helper.Localized(key: "fifth_body"), image: UIImage(named: "note"), buttonText: Helper.Localized(key: "next"), action: ({
             //TODO action
             self.introVC.skipButton.sendActions(for: UIControl.Event.touchUpInside)
             
         }))
         
-        let forthPage = OnboardingContentViewController(title: "EC Calendar", body: "Reuse the calendar", image: UIImage(named: "tree"), buttonText: "next", action: ({
-            //TODO action
-            self.introVC.skipButton.sendActions(for: UIControl.Event.touchUpInside)
-            
-        }))
-        
-        let fifthPage = OnboardingContentViewController(title: "EC Diary", body: nil, image: UIImage(named: "note"), buttonText: "next", action: ({
-            //TODO action
-            self.introVC.skipButton.sendActions(for: UIControl.Event.touchUpInside)
-            
-        }))
         
         
         
-        firstPage.topPadding = 70
-        firstPage.underIconPadding = 20
-        firstPage.underTitlePadding = 85
-        firstPage.bottomPadding = 70
-        firstPage.iconWidth = 250
-        firstPage.iconHeight = 128
+        
+        setPagePreferences(page: firstPage, top: 240, icon_padding: 100, title_padding: 85, bottom_padding: 70, icon_w: 150, icon_h: 130, pt: 0 )
+        setPagePreferences(page: secondPage, top: 150, icon_padding: 50, title_padding: 30, bottom_padding: 70, icon_w: 150, icon_h: 130, pt: 1 )
+        setPagePreferences(page: thirdPage, top: 150, icon_padding: 50, title_padding: 30, bottom_padding: 70, icon_w: 226.5, icon_h: 205, pt: 2 )
+        setPagePreferences(page: forthPage, top: 150, icon_padding: 50, title_padding: 30, bottom_padding: 70, icon_w: 243.5, icon_h: 271, pt: 3 )
+        setPagePreferences(page: fifthPage, top: 150, icon_padding: 50, title_padding: 30, bottom_padding: 70, icon_w: 173.5, icon_h: 196, pt: -1 )
 
-        
-        
-        
         
         //add pages
         self.introVC.viewControllers = [firstPage, secondPage, thirdPage, forthPage, fifthPage]
@@ -84,6 +82,16 @@ class AppIntroVC: UIViewController {
         
         
         
+    }
+    
+    func setPagePreferences(page: OnboardingContentViewController, top: Float, icon_padding: Float, title_padding: Float, bottom_padding: Float, icon_w: Float, icon_h: Float, pt: Int) {
+        page.topPadding = CGFloat(top)
+        page.underIconPadding = CGFloat(icon_padding)
+        page.underTitlePadding = CGFloat(title_padding)
+        page.bottomPadding = CGFloat(bottom_padding)
+        page.iconWidth = CGFloat(icon_w)
+        page.iconHeight = CGFloat(icon_h)
+        page.actionButton = setActionButton(page_type: pt)
     }
     
     func addSkipButton(parent:UIView) -> UIButton {
@@ -106,5 +114,23 @@ class AppIntroVC: UIViewController {
         return btn
     }
     
+    
+    func setActionButton(page_type: Int) -> UIButton {
+        let nextButton  = UIButton(type: .custom)
+        nextButton.setImage(UIImage(named: "next_arrow"), for: .normal)
+//        nextButton.imageEdgeInsets = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12);
+        nextButton.imageView?.contentMode = .scaleAspectFit
+        nextButton.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
+        nextButton.tag = page_type
+        return nextButton
+    }
+    @objc func buttonAction(sender: UIButton) {
+        if (sender.tag == -1) { //temp hardcode
+            self.introVC.skipButton.sendActions(for: UIControl.Event.touchUpInside)
+        }else {
+            self.introVC.moveNextPage()
+        }
+        
+    }
     
 }
