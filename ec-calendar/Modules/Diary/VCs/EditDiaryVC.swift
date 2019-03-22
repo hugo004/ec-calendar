@@ -14,9 +14,12 @@ protocol FinishEdit {
     func diaryEdit(diary:Diary)
 }
 
-class EditDiaryVC: UIViewController, UITableViewDelegate, UITableViewDataSource ,UITextViewDelegate {
+class EditDiaryVC: UIViewController, UITableViewDelegate, UITableViewDataSource ,UITextViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate{
     
     var _diary : Diary!
+    var year : Int = 0
+    var month : Int = 0
+    var index : Int = 0
     
     var finishDelegate:FinishEdit!
     
@@ -28,33 +31,80 @@ class EditDiaryVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
     var saveButton = UIBarButtonItem.init()
     let datePicker = UIDatePicker.init()
     
+    var newDatePicker : DiaryPickDateView!
+    
+    let btnDelete = UIButton.init()
+    let imagePicker = UIImagePickerController()
+    
     var table0 = ["Image"]
     var table1 = ["Title","Weather"]
     var table2 = ["Date"]
     var table3 = ["Content"]
+    var table4 = ["Delete"]
 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.white
         
         initView()
+        
 
         // Do any additional setup after loading the view.
     }
     
     @objc func SaveEdit(_ sender:UIButton!)
     {
-        
-        let indexPath = IndexPath(row: 1, section: 1)
-        let weathercell = tv.cellForRow(at: indexPath) as! EditandAddView
-        
         let titleIndexPath = IndexPath(row: 0, section: 1)
         let titleCell = tv.cellForRow(at: titleIndexPath) as! EditandAddView
         
-        let day = Diary(date: datePicker.date, week: "123", weather: weathercell.txtInput.text!, content: txtContent.text!, title: titleCell.txtInput.text!, image: imageView.image!)
-
-        finishDelegate.diaryEdit(diary: day)
-        self.navigationController?.popViewController(animated: true)
+        let y = newDatePicker.rightYearViewData[newDatePicker.rightYear.selectedRow(inComponent: 0)]
+        let m = newDatePicker.centerMonthViewData[newDatePicker.centerMonth.selectedRow(inComponent: 0)]
+        let d = newDatePicker.leftDayViewData[newDatePicker.leftDay.selectedRow(inComponent: 0)]
+        
+        var daysArray = Helper.localRetrieveDiary(key: "\(y)-\(m)")
+        var isExist = false
+        daysArray.forEach {
+            (diary) in
+            if diary.day == d {
+                isExist = true
+            }
+        }
+        
+        if (isExist && m != month) || (isExist && m == month) {
+            let alert = UIAlertController(title: Helper.Localized(key: "diary_edit_alert_warming_title"), message: Helper.Localized(key: "diary_edit_alert_warming_message"), preferredStyle: .alert)
+            let action = UIAlertAction(title: "OK!", style: .default) {
+                (UIAlertAction) in self
+            }
+            alert.addAction(action)
+            present(alert, animated: true, completion: nil)
+        }else if !isExist && m != month{
+            var daysArray = Helper.localRetrieveDiary(key: "\(year)-\(month)")
+            
+            for i in 0...(daysArray.count-1){
+                if daysArray[i].month == month && daysArray[i].day == _diary.day{
+                    daysArray.remove(at: i)
+                    break
+                }
+            }
+            Helper.localSaveDiary(data: daysArray, key: "\(year)-\(month)")
+            
+            let day = Diary(year: y, month: m, day: d, weather:titleCell.txtInput.text!, content: txtContent.text!, title: titleCell.txtInput.text!, image: imageView.image!)
+            
+            var newDaysArray = Helper.localRetrieveDiary(key: "\(y)-\(m)")
+            newDaysArray.append(day)
+            Helper.localSaveDiary(data: newDaysArray, key: "\(y)-\(m)")
+        
+            let viewControllers: [UIViewController] = self.navigationController!.viewControllers as [UIViewController]
+            self.navigationController!.popToViewController(viewControllers[viewControllers.count-3], animated: true)
+        } else{
+            
+            let day = Diary(year: y, month: m, day: d, weather:titleCell.txtInput.text!, content: txtContent.text!, title: titleCell.txtInput.text!, image: imageView.image!)
+            finishDelegate.diaryEdit(diary: day)
+            self.navigationController?.popViewController(animated: true)
+        }
+        
+        
+        
         
     }
     
@@ -74,6 +124,8 @@ class EditDiaryVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
         tv.dataSource = self
         tv.delegate = self
         
+        imagePicker.delegate = self
+        
         scrollView.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height)
         scrollView.contentSize = CGSize(width: self.view.frame.size.width, height: navigationBarHeight+barHeight+tv.frame.height)
         scrollView.addSubview(tv)
@@ -81,7 +133,7 @@ class EditDiaryVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 4
+        return 5
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -90,6 +142,7 @@ class EditDiaryVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
         case 1: return table1.count
         case 2: return table2.count
         case 3: return table3.count
+        case 4: return table3.count
         default:return 0
         }
     }
@@ -100,6 +153,7 @@ class EditDiaryVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
         case 1: return " "
         case 2: return " "
         case 3: return " "
+        case 4: return " "
         default:return " "
         }
     }
@@ -110,8 +164,46 @@ class EditDiaryVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
         case 1: return 10
         case 2: return 30
         case 3: return 30
+        case 4: return 30
         default:return 0
         }
+    }
+    
+    @objc func imageTapped(tapGestureRecognizer: UITapGestureRecognizer)
+    {
+        let controller = UIAlertController(title: Helper.Localized(key: "diary_edit_alert_title"), message: "", preferredStyle: .actionSheet)
+        let names = [Helper.Localized(key: "diary_edit_alert_photoBook"), Helper.Localized(key: "diary_edit_alert_camera")]
+        
+        let openPhoto = UIAlertAction(title: names[0], style: .default) { (action) in
+            self.Galleryuse()
+        }
+        
+        let openCamera = UIAlertAction(title: names[1], style: .default) { (action) in
+            
+        }
+        
+        controller.addAction(openPhoto)
+        controller.addAction(openCamera)
+        let cancelAction = UIAlertAction(title: Helper.Localized(key: "diary_edit_alert_cancel"), style: .cancel, handler: nil)
+        controller.addAction(cancelAction)
+        present(controller, animated: true, completion: nil)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        if let image = info [UIImagePickerController.InfoKey.originalImage] as? UIImage {
+            imageView.contentMode = .scaleToFill
+            _diary.image = image.pngData()!
+            imageView.image = image
+        }
+        picker.dismiss(animated: true, completion: nil)
+        
+    }
+    
+    @objc func Galleryuse()
+    {
+        imagePicker.allowsEditing = false
+        imagePicker.sourceType = .photoLibrary
+        present(imagePicker, animated: true, completion: nil)
     }
     
     
@@ -120,11 +212,16 @@ class EditDiaryVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
         let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as! EditandAddView
         
         if indexPath.section == 0 {
-            //let image = UIImage(named: "test")
+            
+            let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(imageTapped(tapGestureRecognizer:)))
+            imageView.isUserInteractionEnabled = true
+            imageView.addGestureRecognizer(tapGestureRecognizer)
+            
             imageView.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 300)
             imageView.image = UIImage(data: _diary.image)
+            
             cell.addSubview(imageView)
-            cell.txtInput.isEnabled = false
+            cell.txtInput.isHidden = true
         }else if indexPath.section == 1 {
             //cell.lbltitle.text = table1[indexPath.row]
             cell.selectionStyle = .none
@@ -136,30 +233,53 @@ class EditDiaryVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
             }
         }else if indexPath.section == 2 {
             
-            
-            datePicker.frame = CGRect(x: 0, y: 0, width: cell.contentView.frame.size.width, height: cell.contentView.frame.size.height)
-            datePicker.datePickerMode = .date
-            datePicker.date = _diary.date
-            
-            cell.txtInput.isEnabled = false
-            cell.addSubview(datePicker)
-            //cell.lbltitle.text = table2[indexPath.row]
+            newDatePicker = DiaryPickDateView(frame: CGRect(x: 0, y: 0, width: cell.contentView.frame.size.width, height: cell.contentView.frame.size.height))
+            newDatePicker.day = _diary.day
+            newDatePicker.month = _diary.month
+            newDatePicker.year = _diary.year
+            newDatePicker.afterInit()
+            cell.addSubview(newDatePicker)
             cell.selectionStyle = .none
             
         }else if indexPath.section == 3 {
             cell.txtInput.isEnabled = false
-            txtContent.frame = CGRect(x: 0, y: 0, width: cell.contentView.frame.size.width, height: 400)
-            txtContent.layer.borderColor = UIColor.black.cgColor
-            txtContent.layer.borderWidth = 1
+            txtContent.frame = CGRect(x: 20, y: 0, width: cell.contentView.frame.size.width-40, height: cell.contentView.frame.size.height)
             txtContent.delegate = self
             txtContent.text = _diary.content
+            txtContent.font = UIFont.systemFont(ofSize: 20.0)
             
             cell.addSubview(txtContent)
+            //cell.lbltitle.text = table3[indexPath.row]
+            cell.selectionStyle = .none
+        }else if indexPath.section == 4 {
+            cell.txtInput.isEnabled = false
+            btnDelete.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 60)
+            btnDelete.setTitle(Helper.Localized(key: "diary_edit_btnDelete"), for: .normal)
+            btnDelete.setTitleColor(UIColor.red, for: .normal)
+            btnDelete.addTarget(self, action: #selector(DeleteDiary), for: UIControl.Event.touchUpInside)
+            
+            cell.addSubview(btnDelete)
             //cell.lbltitle.text = table3[indexPath.row]
             cell.selectionStyle = .none
         }
         
         return cell
+    }
+    
+    @objc func DeleteDiary() {
+        let viewControllers: [UIViewController] = self.navigationController!.viewControllers as [UIViewController]
+        
+        var daysArray = Helper.localRetrieveDiary(key: "\(year)-\(month)")
+        
+        for i in 0...(daysArray.count-1){
+            if daysArray[i].month == month && daysArray[i].day == _diary.day{
+                daysArray.remove(at: i)
+                break
+            }
+        }
+        
+        Helper.localSaveDiary(data: daysArray, key: "\(year)-\(month)")
+        self.navigationController!.popToViewController(viewControllers[viewControllers.count-3], animated: true)
     }
     
     
@@ -173,19 +293,11 @@ class EditDiaryVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
             return 60
         }else if indexPath.section == 3 {
             return 300
+        }else if indexPath.section == 4 {
+            return 60
         }
         return 60
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+    
 }

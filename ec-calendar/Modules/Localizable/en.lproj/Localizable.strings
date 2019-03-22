@@ -46,6 +46,27 @@
 "calendar_doubleSun" = "Double Sunday Mode";
 "calendar_doubleSat" = "Double Saturday Mode";
 
+//Diary_add
+"diary_add_lblImage" = "Image:";
+"diary_add_lblTitle" = "Title";
+"diary_add_lblWeather" = "Weather:";
+"diary_add_lblDate" = "Date:";
+"diary_add_lblContent" = "Content:";
+"diary_add_alert_title" = "Can't add a new diary";
+"diary_add_alert_message" = "Diary is existing!";
+
+//Diary_edit
+"diary_edit_btnDelete" = "Delete";
+"diary_edit_alert_cancel" = "Cancel";
+"diary_edit_alert_photoBook" = "Album";
+"diary_edit_alert_camera" = "Camera";
+"diary_add_lblContent" = "Need to change a photo?";
+"diary_edit_alert_warming_message" = "Diary is existing!";
+"diary_edit_alert_warming_title" = "Can't add a new diary";
+
+
+
+
 //event
 "event_add" = "Add New Event";
 "event_title" = "Title";

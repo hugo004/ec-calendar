@@ -18,13 +18,6 @@ class DiaryDetailView: UIView {
         return lbl
     }()
     
-    let lblWeek: UILabel = {
-        let lbl = UILabel()
-        lbl.numberOfLines = 1
-        lbl.font = .systemFont(ofSize: 25, weight: .bold)
-        
-        return lbl
-    }()
     
     let lblWeather: UILabel = {
         let lbl = UILabel()

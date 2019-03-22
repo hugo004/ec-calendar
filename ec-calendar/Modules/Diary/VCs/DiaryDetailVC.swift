@@ -12,6 +12,10 @@ class DiaryDetailVC: UIViewController {
     
     var contentHeaderView : DiaryDetailView!
     
+    var year : Int = 0
+    var month : Int = 0
+    var index : Int = 0
+    
     let imageView = UIImageView.init()
     let imagetitle = UILabel.init()
     let scrollView = UIScrollView.init()
@@ -36,6 +40,9 @@ class DiaryDetailVC: UIViewController {
         editVC.finishDelegate = self
         
         editVC._diary = _diary
+        editVC.year = self.year
+        editVC.month = self.month
+        editVC.index = self.index
         
         self.navigationController?.pushViewController(editVC, animated: true)
     }
@@ -46,27 +53,25 @@ class DiaryDetailVC: UIViewController {
         let editButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.edit, target: self, action: #selector(editDiary))
         self.navigationItem.rightBarButtonItem = editButton
         
-        
-        let navigationBarHeight: CGFloat = self.navigationController!.navigationBar.frame.height
-        let barHeight: CGFloat = UIApplication.shared.statusBarFrame.size.height
-        scrollView.frame = CGRect(x: 0, y: navigationBarHeight+barHeight, width: self.view.frame.size.width, height: self.view.frame.size.height)
+        scrollView.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height)
         
         imageView.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 300)
-        imageView.image = UIImage(data: _diary.image)        //imageView.backgroundColor = UIColor.blue
+        imageView.image = UIImage(data: _diary.image)?.alpha(0.7)
         
-        imagetitle.frame = CGRect(x: 0, y: imageView.frame.size.height - 50, width: self.view.frame.size.width, height: 50)
+        
+        
+        imagetitle.frame = CGRect(x: 20, y: imageView.frame.size.height - 50, width: self.view.frame.size.width, height: 50)
         imagetitle.text = _diary.title
-        imagetitle.font = UIFont(name: "OldSansBlack", size: 50)
+        imagetitle.font = .systemFont(ofSize: 40, weight: .bold)
         
-        contentHeaderView = DiaryDetailView(frame: CGRect(x: 0, y: imageView.frame.height, width: self.view.frame.size.width, height: 80))
+        contentHeaderView = DiaryDetailView(frame: CGRect(x: 0, y: imageView.frame.height, width: self.view.frame.size.width, height: 50))
         contentHeaderView.backgroundColor = UIColor.lightGray
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
         
-        contentHeaderView.lblDate.text = dateFormatter.string(from: _diary.date)
+        contentHeaderView.lblDate.text = _diary.toString()
         contentHeaderView.lblWeather.text = _diary.weather
-        contentHeaderView.lblWeek.text = _diary.week
-        
+       
         
         //contentView.backgroundColor = UIColor.black
         contentView.textColor = UIColor.black
@@ -75,7 +80,7 @@ class DiaryDetailVC: UIViewController {
         contentView.font = UIFont.systemFont(ofSize: 20.0)
         
         contentView.text = _diary.content
-        contentView.frame = CGRect(x: 0, y: imageView.frame.height+contentHeaderView.frame.height, width: self.view.frame.size.width, height: contentView.font.pointSize*contentView.font.lineHeight)
+        contentView.frame = CGRect(x: 20, y: imageView.frame.height+contentHeaderView.frame.height+20, width: self.view.frame.size.width-40, height: contentView.font.pointSize*contentView.font.lineHeight-40)
         contentView.sizeToFit()
         
         
@@ -86,7 +91,7 @@ class DiaryDetailVC: UIViewController {
         
         
         
-        scrollView.contentSize = CGSize(width: self.view.frame.size.width, height: navigationBarHeight+barHeight+imageView.frame.height+contentHeaderView.frame.height+contentView.frame.height)
+        scrollView.contentSize = CGSize(width: self.view.frame.size.width, height: imageView.frame.height+contentHeaderView.frame.height+contentView.frame.height)
         imageView.addSubview(imagetitle)
         scrollView.addSubview(imageView)
         scrollView.addSubview(contentHeaderView)
@@ -105,6 +110,17 @@ class DiaryDetailVC: UIViewController {
     
 }
 
+extension UIImage {
+    
+    func alpha(_ value:CGFloat) -> UIImage {
+        UIGraphicsBeginImageContextWithOptions(size, false, scale)
+        draw(at: CGPoint.zero, blendMode: .normal, alpha: value)
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return newImage!
+    }
+}
+
 extension DiaryDetailVC: FinishEdit {
     func diaryEdit(diary: Diary) {
         _diary = diary
@@ -113,21 +129,10 @@ extension DiaryDetailVC: FinishEdit {
     }
     
     func updateDateArray(diary: Diary) {
-        let monthDateFormatter = DateFormatter()
-        monthDateFormatter.dateFormat = "MM"
-        let inputMonth = monthDateFormatter.string(from: diary.date)
+        var daysArray = Helper.localRetrieveDiary(key: "\(year)-\(month)")
+        daysArray[index] = diary
+        Helper.localSaveDiary(data: daysArray, key: "\(year)-\(month)")
         
-        let dayDateFormatter = DateFormatter()
-        dayDateFormatter.dateFormat = "dd"
-        let inputDay = dayDateFormatter.string(from: diary.date)
-        
-    }
-    
-    func json(from object:Any) -> String? {
-        guard let data = try? JSONSerialization.data(withJSONObject: object, options: []) else {
-            return nil
-        }
-        return String(data: data, encoding: String.Encoding.utf8)
     }
     
 }

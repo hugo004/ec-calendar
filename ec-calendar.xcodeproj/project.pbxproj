@@ -40,6 +40,7 @@
 		9AB4BD922202E96E00306E94 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9AB4BD902202E96E00306E94 /* Main.storyboard */; };
 		9AB4BD942202E96F00306E94 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9AB4BD932202E96F00306E94 /* Assets.xcassets */; };
 		9AB4BD972202E96F00306E94 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9AB4BD952202E96F00306E94 /* LaunchScreen.storyboard */; };
+		C432C3FB224542DC00E63185 /* DiaryPickDateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C432C3FA224542DC00E63185 /* DiaryPickDateView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -82,6 +83,7 @@
 		9AB4BD962202E96F00306E94 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9AB4BD982202E96F00306E94 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B10978D273D50D13AFEDD848 /* Pods-ec-calendar.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ec-calendar.release.xcconfig"; path = "Pods/Target Support Files/Pods-ec-calendar/Pods-ec-calendar.release.xcconfig"; sourceTree = "<group>"; };
+		C432C3FA224542DC00E63185 /* DiaryPickDateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryPickDateView.swift; sourceTree = "<group>"; };
 		E85168C234927E855163157B /* Pods-ec-calendar.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ec-calendar.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ec-calendar/Pods-ec-calendar.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -240,6 +242,7 @@
 				9AA1A99C2244F53700CC637C /* DiaryMonthHeaderView.swift */,
 				9AA1A99D2244F53700CC637C /* EditandAddView.swift */,
 				9AA1A99E2244F53700CC637C /* DiaryCellVC.swift */,
+				C432C3FA224542DC00E63185 /* DiaryPickDateView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -458,6 +461,7 @@
 				9A9A9BA62244C5AC00B51C93 /* AboutAppVC.swift in Sources */,
 				9A5A50D2221AD5C600DE8048 /* CalendarVC.swift in Sources */,
 				9A1F33AD220458A40068CC4B /* TestViewController.swift in Sources */,
+				C432C3FB224542DC00E63185 /* DiaryPickDateView.swift in Sources */,
 				9AB4BD8D2202E96E00306E94 /* AppDelegate.swift in Sources */,
 				9AA1A9A12244F53700CC637C /* AddDiaryVC.swift in Sources */,
 				9AA1A9A42244F53700CC637C /* DiaryMonth.swift in Sources */,

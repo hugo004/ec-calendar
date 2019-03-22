@@ -46,6 +46,26 @@
 "calendar_doubleSun" = "雙星期日模式";
 "calendar_doubleSat" = "雙星期六模式";
 
+//Diary_add
+"diary_add_lblImage" = "圖片:";
+"diary_add_lblTitle" = "主題:";
+"diary_add_lblWeather" = "天氣:";
+"diary_add_lblDate" = "日期:";
+"diary_add_lblContent" = "內容:";
+"diary_add_alert_title" = "無法加入日記";
+"diary_add_alert_message" = "日記已存在";
+
+//Diary_edit
+"diary_edit_btnDelete" = "刪除";
+"diary_edit_alert_cancel" = "取消";
+"diary_edit_alert_photoBook" = "相簿";
+"diary_edit_alert_camera" = "相機";
+"diary_add_lblContent" = "需要更改圖片？";
+"diary_edit_alert_warming_message" = "日記已存在";
+"diary_edit_alert_warming_title" = "無法加入日記";
+
+
+
 //event
 "event_add" = "新增事件";
 "event_title" = "標題";

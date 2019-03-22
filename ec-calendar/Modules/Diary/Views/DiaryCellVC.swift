@@ -18,13 +18,13 @@ class DiaryCellVC: UITableViewCell {
         return lbl
     }()
     
-    let lblWeek: UILabel = {
+    /*let lblWeek: UILabel = {
         let lbl = UILabel()
         lbl.numberOfLines = 1
         lbl.font = .systemFont(ofSize: 25, weight: .bold)
         
         return lbl
-    }()
+    }()*/
     
     let lblWeather: UILabel = {
         let lbl = UILabel()
@@ -42,7 +42,7 @@ class DiaryCellVC: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         self.contentView.addSubview(lblDate)
-        self.contentView.addSubview(lblWeek)
+        //self.contentView.addSubview(lblWeek)
         self.contentView.addSubview(lblWeather)
         
         lblDate.snp.makeConstraints { (make) in
@@ -50,9 +50,9 @@ class DiaryCellVC: UITableViewCell {
             make.centerY.equalTo(self)
         }
         
-        lblWeek.snp.makeConstraints { (make) in
+        /*lblWeek.snp.makeConstraints { (make) in
             make.center.equalTo(self.contentView)
-        }
+        }*/
         lblWeather.snp.makeConstraints { (make) in
             make.right.equalTo(self.contentView).offset(-20)
             make.centerY.equalTo(self)

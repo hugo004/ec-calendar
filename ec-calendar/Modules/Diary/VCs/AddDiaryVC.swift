@@ -17,6 +17,7 @@ private let identifier  = "AddDiaryVC"
 class AddDiaryVC: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate ,UITextViewDelegate {
     
     var delegate:DataEnterDelegate!
+    let scrollView = UIScrollView.init()
     
     var newMedia: Bool?
     let imgPicture = UIImageView.init()
@@ -24,6 +25,9 @@ class AddDiaryVC: UIViewController, UINavigationControllerDelegate, UIImagePicke
     let txtWeather = UITextField.init()
     let txtTitle = UITextField.init()
     let datePicker = UIDatePicker.init()
+    
+    var newDatePicker : DiaryPickDateView!
+    
     let lblImage = UILabel.init()
     let lblTitle = UILabel.init()
     let lblWeather = UILabel.init()
@@ -39,7 +43,9 @@ class AddDiaryVC: UIViewController, UINavigationControllerDelegate, UIImagePicke
     let imagePicker = UIImagePickerController()
     var imagesave : UIImage = UIImage(named:"timg.jpg")!
     
-    
+    var curDay : Int = 0
+    var curMonth : Int = 0
+    var curYear : Int = 0
     
     
     override func viewDidLoad() {
@@ -56,37 +62,31 @@ class AddDiaryVC: UIViewController, UINavigationControllerDelegate, UIImagePicke
         //  UserDefaults.standard.set("chinese",forKey:"language")
         
         
-        lblImage.frame = CGRect(x: 9, y: 120, width: 70, height: 21)
-        lblImage.text = "Image:"
+        lblImage.frame = CGRect(x: 9, y: 30, width: 70, height: 21)
+        lblImage.text = Helper.Localized(key: "diary_add_lblImage");
         
-        lblTitle.frame = CGRect(x: 9, y: 180, width: 70, height: 21)
-        lblTitle.text = "Title:"
-        
-        
-        
-        lblWeather.frame = CGRect(x: 9, y: 240, width: 70, height: 21)
-        lblWeather.text = "Weather:"
+        lblTitle.frame = CGRect(x: 9, y: 90, width: 70, height: 21)
+        lblTitle.text = Helper.Localized(key: "diary_add_lblTitle");
         
         
+        lblWeather.frame = CGRect(x: 9, y: 150, width: 70, height: 21)
+        lblWeather.text = Helper.Localized(key: "diary_add_lblWeather");
         
-        lblDate.frame = CGRect(x: 9, y: 300, width: 70, height: 21)
-        lblDate.text = "Date:"
+        lblDate.frame = CGRect(x: 9, y: 210, width: 70, height: 21)
+        lblDate.text = Helper.Localized(key: "diary_add_lblDate");
         
-        
-        
-        lblContent.frame = CGRect(x: 9, y: 360, width: 70, height: 21)
-        lblContent.text = "Content:"
-        
+        lblContent.frame = CGRect(x: 9, y: 270, width: 70, height: 21)
+        lblContent.text = Helper.Localized(key: "diary_add_lblContent");
         
         
         imgPicture.image = UIImage(named:"timg.jpg")!
         imgPicture.backgroundColor = UIColor.lightGray
-        imgPicture.frame = CGRect(x: UIScreen.main.bounds.width-100, y: 95, width: 70, height: 70)
+        imgPicture.frame = CGRect(x: UIScreen.main.bounds.width-100, y: 10, width: 70, height: 70)
         
         
         
         
-        txtTitle.frame = CGRect(x: UIScreen.main.bounds.width-198, y: 175, width: 168, height: 30)
+        txtTitle.frame = CGRect(x: UIScreen.main.bounds.width-198, y: 90, width: 168, height: 30)
         txtTitle.layer.borderColor = UIColor.black.cgColor
         txtTitle.layer.borderWidth = 1
         txtTitle.addTarget(self, action: #selector(textFieldEditingDidChange(_:)), for: UIControl.Event.editingChanged)
@@ -94,26 +94,32 @@ class AddDiaryVC: UIViewController, UINavigationControllerDelegate, UIImagePicke
         
         
         
-        txtWeather.frame = CGRect(x: UIScreen.main.bounds.width-198, y: 231, width: 168, height: 30)
+        txtWeather.frame = CGRect(x: UIScreen.main.bounds.width-198, y: 150, width: 168, height: 30)
         txtWeather.layer.borderColor = UIColor.black.cgColor
         txtWeather.layer.borderWidth = 1
         txtWeather.addTarget(self, action: #selector(textFieldEditingDidChange(_:)), for: UIControl.Event.editingChanged)
         
+        newDatePicker = DiaryPickDateView(frame: CGRect(x: UIScreen.main.bounds.width-277, y: 210, width: 249, height: 46))
+        newDatePicker.day = curDay
+        newDatePicker.month = curMonth
+        newDatePicker.year = curYear
+        newDatePicker.afterInit()
         
         
-        datePicker.frame = CGRect(x: UIScreen.main.bounds.width-277, y: 288, width: 249, height: 46)
-        datePicker.datePickerMode = .date
+        /*newDatePicker.frame = CGRect(x: UIScreen.main.bounds.width-277, y: 288, width: 249, height: 46)*/
+        /*datePicker.frame = CGRect(x: UIScreen.main.bounds.width-277, y: 288, width: 249, height: 46)
+        datePicker.datePickerMode = .date*/
         
         
         
         
-        txtContent.frame = CGRect(x: 9, y: 400, width: UIScreen.main.bounds.width-30, height: 400)
+        txtContent.frame = CGRect(x: 9, y: 300, width: UIScreen.main.bounds.width-30, height: 400)
         txtContent.layer.borderColor = UIColor.black.cgColor
         txtContent.layer.borderWidth = 1
         txtContent.delegate = self
         
         
-        btnCamera.frame = CGRect(x: UIScreen.main.bounds.width-190, y: 120, width: 70, height: 30)
+        btnCamera.frame = CGRect(x: UIScreen.main.bounds.width-190, y: 30, width: 70, height: 30)
         
         btnCamera.backgroundColor = UIColor.lightGray
         btnCamera.setTitle("Camera", for: UIControl.State.normal)
@@ -124,21 +130,33 @@ class AddDiaryVC: UIViewController, UINavigationControllerDelegate, UIImagePicke
         
         
         
-        
-        
-        btnGallery.frame = CGRect(x: UIScreen.main.bounds.width-270, y: 120, width: 70, height: 30)
+        btnGallery.frame = CGRect(x: UIScreen.main.bounds.width-270, y: 30, width: 70, height: 30)
         
         btnGallery.backgroundColor = UIColor.lightGray
         btnGallery.setTitle("Gallery", for: UIControl.State.normal)
         btnGallery.tintColor = UIColor.black
         btnGallery.addTarget(self, action: #selector(AddDiaryVC.Galleryuse(_:)), for: .touchUpInside)
         
-        ChangeLan()
+        scrollView.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height)
+        scrollView.contentSize = CGSize(width: self.view.frame.size.width, height: 700)
+        scrollView.addSubview(lblImage)
+        scrollView.addSubview(lblTitle)
+        scrollView.addSubview(lblWeather)
+        scrollView.addSubview(lblDate)
+        scrollView.addSubview(lblContent)
+        scrollView.addSubview(imgPicture)
+        scrollView.addSubview(txtTitle)
+        scrollView.addSubview(txtWeather)
+        scrollView.addSubview(newDatePicker)
+        scrollView.addSubview(txtContent)
+        scrollView.addSubview(btnCamera)
+        scrollView.addSubview(btnGallery)
+        
         
     
         
         
-        self.view.addSubview(lblImage)
+        /*self.view.addSubview(lblImage)
         self.view.addSubview(lblTitle)
         self.view.addSubview(lblWeather)
         self.view.addSubview(lblDate)
@@ -146,11 +164,14 @@ class AddDiaryVC: UIViewController, UINavigationControllerDelegate, UIImagePicke
         self.view.addSubview(imgPicture)
         self.view.addSubview(txtTitle)
         self.view.addSubview(txtWeather)
-        self.view.addSubview(datePicker)
+        self.view.addSubview(newDatePicker)
+        
+        //self.view.addSubview(datePicker)
         self.view.addSubview(txtContent)
         //self.view.addSubview(btnSubmit)
         self.view.addSubview(btnCamera)
-        self.view.addSubview(btnGallery)
+        self.view.addSubview(btnGallery)*/
+        self.view.addSubview(scrollView)
         
         
     }
@@ -179,25 +200,36 @@ class AddDiaryVC: UIViewController, UINavigationControllerDelegate, UIImagePicke
     
     @objc func Submit(_ sender:UIButton!)
     {
-        let imageData:NSData = imagesave.pngData()! as NSData
-        let imageBase64String = imageData.base64EncodedString()
+        /*let imageData:NSData = imagesave.pngData()! as NSData
+        let imageBase64String = imageData.base64EncodedString()*/
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
         
-        let day = Diary(date: datePicker.date, week: "123", weather: txtWeather.text!, content: txtContent.text!, title: txtTitle.text!, image: imagesave)
+        let y = newDatePicker.rightYearViewData[newDatePicker.rightYear.selectedRow(inComponent: 0)]
+        let m = newDatePicker.centerMonthViewData[newDatePicker.centerMonth.selectedRow(inComponent: 0)]
+        let d = newDatePicker.leftDayViewData[newDatePicker.leftDay.selectedRow(inComponent: 0)]
         
-        delegate.diaryEnter(diary: day)
-        Helper.localSaveDiary(data: [day], key: "myDiary")
-        self.navigationController?.popViewController(animated: true)
-        //self.dismiss(animated: true, completion: nil)
+        let daysArray = Helper.localRetrieveDiary(key: "\(y)-\(m)")
         
-        
-        //add user default
-        //UserDefaults.standard.set(txtContent.text, forKey: "")
-        //UserDefaults.standard.set(txtWeather.text, forKey: "")
-        //UserDefaults.standard.set(txtTitle.text, forKey: "")
-        //UserDefaults.standard.set(dateFormatter.string(from: datePicker.date), forKey: "")
-        //UserDefaults.standard.set(imageBase64String, forKey: "")
+        var isExist = false
+        daysArray.forEach {
+            (diary) in
+            if diary.day == d {
+                isExist = true
+            }
+        }
+        if isExist{
+            let alert = UIAlertController(title: Helper.Localized(key: "diary_add_alert_title"), message: Helper.Localized(key: "diary_add_alert_message"), preferredStyle: .alert)
+            let action = UIAlertAction(title: "OK!", style: .default) {
+                (UIAlertAction) in self
+            }
+            alert.addAction(action)
+            present(alert, animated: true, completion: nil)
+        }else{
+            let day = Diary(year: y, month: m, day: d, weather: txtWeather.text!, content: txtContent.text!, title: txtTitle.text!, image: imagesave)
+             delegate.diaryEnter(diary: day)
+             self.navigationController?.popViewController(animated: true)
+        }
     }
     
     @objc func Camareause(_ sender:UIButton!)
@@ -245,28 +277,6 @@ class AddDiaryVC: UIViewController, UINavigationControllerDelegate, UIImagePicke
         
         present(imagePicker, animated: true, completion: nil)
     }
-    
-    public func ChangeLan(){
-        
-        if let lan = UserDefaults.standard.object(forKey: "language"){
-            if let path = Bundle.main.path(forResource: lan as! String, ofType: "plist") {
-                let dictRoot = NSDictionary(contentsOfFile: path)
-                if let dict = dictRoot {
-                    lblImage.text = dict["DiaryAddlblImage"] as! String
-                    lblTitle.text = dict["DiaryAddlblTitle"] as! String
-                    lblWeather.text = dict["DiaryAddlblWeather"] as! String
-                    lblContent.text = dict["DiaryAddlblContent"] as! String
-                    lblDate.text  = dict["DiaryAddlblDate"] as! String
-                    btnSubmit.setTitle(dict["DiaryAddbtnSubmit"] as! String, for: UIControl.State.normal)
-                    btnCamera.setTitle(dict["DiaryAddbtnCamera"] as! String, for: UIControl.State.normal)
-                    
-                    btnGallery.setTitle(dict["DiaryAddbtnGallery"] as! String, for: UIControl.State.normal)
-                    
-                }
-            }
-        }
-    }
-    
     
     
 }
