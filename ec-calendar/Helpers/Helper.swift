@@ -123,7 +123,14 @@ class Helper {
 
     
     static func Localized(key:String) -> String {
-        return NSLocalizedString(key, comment: "")
+        let language = currentLanguage();
+        let path: String? = Bundle.main.path(forResource: language, ofType: "lproj") ?? "";
+        let budle: Bundle? = Bundle(path: path!);
+        if budle == nil
+        {
+            return NSLocalizedString(key, comment: "");
+        }
+        return NSLocalizedString(key, tableName: nil, bundle: budle!, value: "", comment: "")
     }
     
     static func changeLanguage(code:String) -> Void {
@@ -132,7 +139,10 @@ class Helper {
     }
     
     static func currentLanguage() -> String {
-        return UserDefaults.standard.value(forKey: "AppleLanguages") as! String;
+        let language = UserDefaults.standard.value(forKey: "AppleLanguages") as! NSArray;
+//        UserDefaults.standard.synchronize();
+
+        return language.firstObject as! String;
     }
 
     static func isDoubleSundayMode() -> Bool {
