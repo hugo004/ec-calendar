@@ -78,3 +78,13 @@
 //language
 "language_chinese" = "Chinese";
 "language_english" = "English";
+
+
+// intro
+"EC_Diary" = "EC Diary";
+"EC_Calendar" = "EC Calendar";
+"second_body" = "A Simple Calendar. Same Schema in Every Year.";
+"third_body" = "Easy to Remember What We Did in That Day.";
+"forth_body" = "More Eco-Friendly.";
+"fifth_body" = "Let's Start!";
+"next" = "next";
