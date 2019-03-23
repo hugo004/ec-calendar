@@ -54,6 +54,8 @@
 "diary_add_lblContent" = "內容:";
 "diary_add_alert_title" = "無法加入日記";
 "diary_add_alert_message" = "日記已存在";
+"diary_add_camera" = "相機";
+"diary_add_gallery" = "相簿";
 
 //Diary_edit
 "diary_edit_btnDelete" = "刪除";

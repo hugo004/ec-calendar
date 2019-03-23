@@ -54,6 +54,8 @@
 "diary_add_lblContent" = "Content:";
 "diary_add_alert_title" = "Can't add a new diary";
 "diary_add_alert_message" = "Diary is existing!";
+"diary_add_camera" = "Camera";
+"diary_add_gallery" = "Gallery";
 
 //Diary_edit
 "diary_edit_btnDelete" = "Delete";

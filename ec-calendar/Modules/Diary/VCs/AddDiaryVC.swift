@@ -122,7 +122,7 @@ class AddDiaryVC: UIViewController, UINavigationControllerDelegate, UIImagePicke
         btnCamera.frame = CGRect(x: UIScreen.main.bounds.width-190, y: 30, width: 70, height: 30)
         
         btnCamera.backgroundColor = UIColor.lightGray
-        btnCamera.setTitle("Camera", for: UIControl.State.normal)
+        btnCamera.setTitle(Helper.Localized(key: "diary_add_camera"), for: UIControl.State.normal)
         btnCamera.tintColor = UIColor.black
         btnCamera.addTarget(self, action: #selector(AddDiaryVC.Camareause(_:)), for: .touchUpInside)
         
@@ -133,7 +133,7 @@ class AddDiaryVC: UIViewController, UINavigationControllerDelegate, UIImagePicke
         btnGallery.frame = CGRect(x: UIScreen.main.bounds.width-270, y: 30, width: 70, height: 30)
         
         btnGallery.backgroundColor = UIColor.lightGray
-        btnGallery.setTitle("Gallery", for: UIControl.State.normal)
+        btnGallery.setTitle(Helper.Localized(key: "diary_add_gallery"), for: UIControl.State.normal)
         btnGallery.tintColor = UIColor.black
         btnGallery.addTarget(self, action: #selector(AddDiaryVC.Galleryuse(_:)), for: .touchUpInside)
         
