@@ -63,7 +63,6 @@ class CalendarVC: UIViewController, UICollectionViewDelegate, UICollectionViewDa
         super.viewWillAppear(animated);
         cv.reloadData();
         
-        Helper.requestCalendarPermission();
     }
     
     func setCalendarMode() -> Void {

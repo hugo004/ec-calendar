@@ -205,8 +205,11 @@ class DayVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             if (vc.isKind(of: CalendarVC.self))
             {
                 self.navigationController?.popToViewController(vc, animated: true)
+                return;
             }
         }
+        
+        self.navigationController?.popViewController(animated: true);
 
     }
     

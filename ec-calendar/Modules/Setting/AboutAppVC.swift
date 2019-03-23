@@ -13,14 +13,16 @@ class AboutAppVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.view.backgroundColor = UIColor.white;
         // Do any additional setup after loading the view.
-        let lbl = UILabel(frame: self.view.bounds)
-        lbl.text = "Intro of EC-calendar !"
+        let lbl = UILabel(frame: CGRect(x: 0, y: 20, width: self.view.bounds.width, height: 300));
+        lbl.text = Helper.Localized(key: "ec_desc");
         lbl.backgroundColor = UIColor.white
         lbl.numberOfLines = 0
         lbl.lineBreakMode = .byWordWrapping
         lbl.textAlignment = .center
         self.view.addSubview(lbl)
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {

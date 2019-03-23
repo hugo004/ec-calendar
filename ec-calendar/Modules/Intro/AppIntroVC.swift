@@ -105,7 +105,7 @@ class AppIntroVC: UIViewController {
     
     func addSkipButton(parent:UIView) -> UIButton {
         let btn = UIButton(frame: CGRect(x: 0, y: 0, width: 100, height: 50))
-        btn.setTitle("Skip", for: UIControl.State.normal)
+        btn.setTitle(Helper.Localized(key: "common_skip"), for: UIControl.State.normal)
         
         parent.addSubview(btn)
         

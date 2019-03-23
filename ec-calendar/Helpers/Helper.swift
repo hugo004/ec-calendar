@@ -8,6 +8,7 @@
 
 import UIKit
 import EventKit
+import Photos
 
 class Helper {
     
@@ -62,7 +63,7 @@ class Helper {
                     event.startDate = myEvent.startDate;
                     event.endDate = myEvent.endDate;
                     event.calendar = eventStore.defaultCalendarForNewEvents;
-                    event.addAlarm(EKAlarm(absoluteDate: event.startDate));
+                    event.addAlarm(EKAlarm(relativeOffset: -0)); //alert at time
                     
                     do
                     {
@@ -163,5 +164,43 @@ class Helper {
         {
             UserDefaults.standard.set(true, forKey: "isDoubleSundayMode");
         }
+    }
+    
+    static func requestCameraPermission() -> Void {
+        let cameraMediaType = AVMediaType.video
+        let cameraAuthorizationStatus = AVCaptureDevice.authorizationStatus(for: cameraMediaType)
+        
+        switch cameraAuthorizationStatus {
+        case .denied: break
+        case .authorized: break
+        case .restricted: break
+            
+        case .notDetermined:
+            // Prompting user for the permission to use the camera.
+            AVCaptureDevice.requestAccess(for: cameraMediaType) { granted in
+                if granted {
+                    print("Granted access to \(cameraMediaType)")
+                } else {
+                    print("Denied access to \(cameraMediaType)")
+                }
+            }
+     
+        }
+    }
+    
+    static func reuqestGalleryPermission() -> Void {
+        
+    }
+    
+    static func askPermission() -> Void {
+        PHPhotoLibrary.requestAuthorization { (status) in
+    
+        }
+        
+        requestCameraPermission();
+        requestCalendarPermission();
+        
+        
+        
     }
 }

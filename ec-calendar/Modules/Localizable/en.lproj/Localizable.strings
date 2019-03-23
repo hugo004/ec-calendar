@@ -43,8 +43,9 @@
 "calendar_oct" = "Oct";
 "calendar_nov" = "Nov";
 "calendar_dec" = "Dec";
-"calendar_doubleSun" = "Double Sunday Mode";
-"calendar_doubleSat" = "Double Saturday Mode";
+"calendar_mode" = "Calendar Mode";
+"calendar_doubleSun" = "Double Sunday";
+"calendar_doubleSat" = "Double Saturday";
 
 //Diary_add
 "diary_add_lblImage" = "Image:";
@@ -90,3 +91,4 @@
 "forth_body" = "More Eco-Friendly.";
 "fifth_body" = "Let's Start!";
 "next" = "next";
+"ec_desc" = "EC Calendar\nA Simple Calendar. Same Schema in Every Year\nEasy to Remember What We Did in That Day\nMore Eco-Friendly";

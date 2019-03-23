@@ -43,6 +43,7 @@ class HomeVC: UITabBarController {
         self.tabBar.barTintColor = UIColor.white
         self.tabBar.backgroundColor = UIColor.white;
         
+        Helper.askPermission();
         
     }
     

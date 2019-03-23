@@ -23,7 +23,9 @@
 	<key>NSCalendarsUsageDescription</key>
 	<string>require use calendar</string>
 	<key>NSCameraUsageDescription</key>
-	<string></string>
+	<string>require use camera</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>require use gallery</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
