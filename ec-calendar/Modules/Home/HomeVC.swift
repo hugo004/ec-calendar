@@ -34,6 +34,7 @@ class HomeVC: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        print("current lan:", Helper.currentLanguage());
         // Do any additional setup after loading the view.
         self.edgesForExtendedLayout = [];
 //        self.extendedLayoutIncludesOpaqueBars = true;
