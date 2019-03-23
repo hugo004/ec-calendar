@@ -1,0 +1,93 @@
+/*
+ Localizable.strings
+ ec-calendar
+ 
+ Created by Hugo on 22/3/2019.
+ Copyright © 2019 Hugo. All rights reserved.
+ */
+
+
+//common
+"common_add" = "新增";
+"common_cancel" = "取消";
+"common_skip" = "跳過";
+"common_nextpage" = "下一頁";
+
+//home
+"home_calendar" = "日曆";
+"home_diary" = "日記";
+"home_setting" = "設置";
+
+//setting
+"setting_aboutapp" = "關於應用";
+"setting_language" = "語言";
+"setting_permission" = "權限管理";
+
+//calendar
+"calendar_sun" = "日";
+"calendar_sat" = "六";
+"calendar_fri" = "五";
+"calendar_thu" = "四";
+"calendar_wed" = "三";
+"calendar_tue" = "二";
+"calendar_mon" = "一";
+"calendar_jan" = "一月";
+"calendar_feb" = "二月";
+"calendar_mar" = "三月";
+"calendar_apr" = "四月";
+"calendar_may" = "五月";
+"calendar_jun" = "六月";
+"calendar_jul" = "七月";
+"calendar_aug" = "八月";
+"calendar_sep" = "九月";
+"calendar_oct" = "十月";
+"calendar_nov" = "十一月";
+"calendar_dec" = "十二月";
+"calendar_mode" = "日曆模式";
+"calendar_doubleSun" = "雙星期日";
+"calendar_doubleSat" = "雙星期六";
+
+//Diary_add
+"diary_add_lblImage" = "圖片:";
+"diary_add_lblTitle" = "主題:";
+"diary_add_lblWeather" = "天氣:";
+"diary_add_lblDate" = "日期:";
+"diary_add_lblContent" = "內容:";
+"diary_add_alert_title" = "無法加入日記";
+"diary_add_alert_message" = "日記已存在";
+"diary_add_camera" = "相機";
+"diary_add_gallery" = "相簿";
+
+//Diary_edit
+"diary_edit_btnDelete" = "刪除";
+"diary_edit_alert_cancel" = "取消";
+"diary_edit_alert_photoBook" = "相簿";
+"diary_edit_alert_camera" = "相機";
+"diary_edit_alert_title" = "需要更改圖片？";
+"diary_edit_alert_warming_message" = "日記已存在";
+"diary_edit_alert_warming_title" = "無法加入日記";
+
+
+
+//event
+"event_add" = "新增事件";
+"event_title" = "標題";
+"event_location" = "地點";
+"event_remark" = "備註";
+"event_startTime" = "開始時間";
+"event_addToCalendar" = "新增至日曆應用程式";
+
+//language
+"language_chinese" = "中文";
+"language_english" = "英文";
+
+
+// intro
+"EC_Diary" = "EC Diary";
+"EC_Calendar" = "EC Calendar";
+"second_body" = "一個簡單的日曆。每年每月都是相同的架構。";
+"third_body" = "容易記住那天我們做了什麼。";
+"forth_body" = "更環保。";
+"fifth_body" = "立刻開始使用吧！";
+"next" = "下一頁";
+"ec_desc" = "EC-Calendar\n一個簡單的日曆。每年每月都是相同的架構\n容易記住那天我們做了什麼\n更環保";

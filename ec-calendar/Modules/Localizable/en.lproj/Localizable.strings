@@ -1,0 +1,94 @@
+/* 
+  Localizable.strings
+  ec-calendar
+
+  Created by Hugo on 22/3/2019.
+  Copyright © 2019 Hugo. All rights reserved.
+*/
+
+
+//common
+"common_add" = "Add";
+"common_cancel" = "Cancel";
+"common_skip" = "Skip";
+"common_nextpage" = "Next";
+
+//home
+"home_calendar" = "Calendar";
+"home_diary" = "Diary";
+"home_setting" = "Setting";
+
+//setting
+"setting_aboutapp" = "About App";
+"setting_language" = "Langauge";
+"setting_permission" = "Permission";
+
+//calendar
+"calendar_sun" = "Sun";
+"calendar_sat" = "Sat";
+"calendar_fri" = "Fri";
+"calendar_thu" = "Thu";
+"calendar_wed" = "Wed";
+"calendar_tue" = "Tue";
+"calendar_mon" = "Mon";
+"calendar_jan" = "Jan";
+"calendar_feb" = "Feb";
+"calendar_mar" = "Mar";
+"calendar_apr" = "Apr";
+"calendar_may" = "May";
+"calendar_jun" = "Jun";
+"calendar_jul" = "Jul";
+"calendar_aug" = "Aug";
+"calendar_sep" = "Sep";
+"calendar_oct" = "Oct";
+"calendar_nov" = "Nov";
+"calendar_dec" = "Dec";
+"calendar_mode" = "Calendar Mode";
+"calendar_doubleSun" = "Double Sunday";
+"calendar_doubleSat" = "Double Saturday";
+
+//Diary_add
+"diary_add_lblImage" = "Image:";
+"diary_add_lblTitle" = "Title";
+"diary_add_lblWeather" = "Weather:";
+"diary_add_lblDate" = "Date:";
+"diary_add_lblContent" = "Content:";
+"diary_add_alert_title" = "Can't add a new diary";
+"diary_add_alert_message" = "Diary is existing!";
+"diary_add_camera" = "Camera";
+"diary_add_gallery" = "Gallery";
+
+//Diary_edit
+"diary_edit_btnDelete" = "Delete";
+"diary_edit_alert_cancel" = "Cancel";
+"diary_edit_alert_photoBook" = "Album";
+"diary_edit_alert_camera" = "Camera";
+"diary_edit_alert_title" = "Need to change a photo?";
+"diary_edit_alert_warming_message" = "Diary is existing!";
+"diary_edit_alert_warming_title" = "Can't add a new diary";
+
+
+
+
+//event
+"event_add" = "Add New Event";
+"event_title" = "Title";
+"event_location" = "Location";
+"event_remark" = "Remark";
+"event_startTime" = "Start At";
+"event_addToCalendar" = "Add to Calendar Application";
+
+//language
+"language_chinese" = "Chinese";
+"language_english" = "English";
+
+
+// intro
+"EC_Diary" = "EC Diary";
+"EC_Calendar" = "EC Calendar";
+"second_body" = "A Simple Calendar. Same Schema in Every Year.";
+"third_body" = "Easy to Remember What We Did in That Day.";
+"forth_body" = "More Eco-Friendly.";
+"fifth_body" = "Let's Start!";
+"next" = "next";
+"ec_desc" = "EC Calendar\nA Simple Calendar. Same Schema in Every Year\nEasy to Remember What We Did in That Day\nMore Eco-Friendly";

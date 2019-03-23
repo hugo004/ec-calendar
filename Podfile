@@ -8,5 +8,7 @@ target 'ec-calendar' do
   # Pods for ec-calendar
   pod 'SnapKit', '~> 4.0.0'
   pod 'ReactiveCocoa', '~> 8.0'
+  pod 'Onboard'
+
   
 end
