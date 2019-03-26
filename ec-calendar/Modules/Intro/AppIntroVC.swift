@@ -57,11 +57,20 @@ class AppIntroVC: UIViewController {
             
         }))
         
-        let forthPage = OnboardingContentViewController(title: Helper.Localized(key: "EC_Calendar"), body: Helper.Localized(key: "forth_body"), image: UIImage(named: "tree"), buttonText: Helper.Localized(key:  "next"), action: ({
+        let forthPage = OnboardingContentViewController(title: Helper.Localized(key: "EC_Calendar"), body: Helper.Localized(key: "forth_body"), image: UIImage(named: "tree"), buttonText: Helper.Localized(key: "next"), action: ({
             //TODO action
             self.introVC.moveNextPage()
             
         }))
+        
+        
+        let addPage1 = OnboardingContentViewController(title: Helper.Localized(key: "key_characteristic"), body: Helper.Localized(key: "addPage1_body"), image: UIImage(named: "ec_b1"), buttonText: Helper.Localized(key: "next"), action: ({
+            //TODO action
+            self.introVC.moveNextPage()
+            
+        }))
+        
+        
         
         let fifthPage = OnboardingContentViewController(title: Helper.Localized(key: "EC_Diary"), body: Helper.Localized(key: "fifth_body"), image: UIImage(named: "note"), buttonText: Helper.Localized(key: "next"), action: ({
             //TODO action
@@ -71,17 +80,18 @@ class AppIntroVC: UIViewController {
         
         
         
-        
-        
         setPagePreferences(page: firstPage, top: 240, icon_padding: 100, title_padding: 85, bottom_padding: 70, icon_w: 150, icon_h: 130, pt: 0 )
         setPagePreferences(page: secondPage, top: 150, icon_padding: 50, title_padding: 30, bottom_padding: 70, icon_w: 150, icon_h: 130, pt: 1 )
         setPagePreferences(page: thirdPage, top: 150, icon_padding: 50, title_padding: 30, bottom_padding: 70, icon_w: 226.5, icon_h: 205, pt: 2 )
         setPagePreferences(page: forthPage, top: 150, icon_padding: 50, title_padding: 30, bottom_padding: 70, icon_w: 243.5, icon_h: 271, pt: 3 )
+        setPagePreferences(page: addPage1, top: 150, icon_padding: 50, title_padding: 30, bottom_padding: 70, icon_w: 357.5, icon_h: 75, pt: 4 )
+        
+        
         setPagePreferences(page: fifthPage, top: 150, icon_padding: 50, title_padding: 30, bottom_padding: 70, icon_w: 173.5, icon_h: 196, pt: -1 )
-
+        
         
         //add pages
-        self.introVC.viewControllers = [firstPage, secondPage, thirdPage, forthPage, fifthPage]
+        self.introVC.viewControllers = [firstPage, secondPage, thirdPage, forthPage, addPage1, fifthPage]
         //add skip button
         self.introVC.skipButton = addSkipButton(parent: self.introVC.view)
         //add intro vc
@@ -100,6 +110,10 @@ class AppIntroVC: UIViewController {
         page.bottomPadding = CGFloat(bottom_padding)
         page.iconWidth = CGFloat(icon_w)
         page.iconHeight = CGFloat(icon_h)
+        page.bodyLabel.shadowColor = UIColor.black
+        page.bodyLabel.shadowOffset = CGSize(width: 1, height: 1)
+        page.titleLabel.shadowColor = UIColor.black
+        page.titleLabel.shadowOffset = CGSize(width: 1, height: 1)
         page.actionButton = setActionButton(page_type: pt)
     }
     
@@ -127,7 +141,7 @@ class AppIntroVC: UIViewController {
     func setActionButton(page_type: Int) -> UIButton {
         let nextButton  = UIButton(type: .custom)
         nextButton.setImage(UIImage(named: "next_arrow"), for: .normal)
-//        nextButton.imageEdgeInsets = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12);
+        //        nextButton.imageEdgeInsets = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12);
         nextButton.imageView?.contentMode = .scaleAspectFit
         nextButton.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
         nextButton.tag = page_type
